@@ -209,8 +209,34 @@ details[open]>summary::before{transform:rotate(90deg)}
 .refs-head{display:flex;align-items:center;gap:6px;font-size:13px}
 .refs-head svg{width:15px;height:15px;color:#ffd65c}
 .refs-head small{color:var(--dim);margin-left:auto;font-size:11.5px}
-.refs-row{display:flex;gap:8px;margin-top:8px}
-.refs-row button{width:56px;height:56px;border-radius:14px;overflow:hidden;border:1px solid var(--line2)}
+.refs-row{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:8px}
+.refs-row button,.refs-row .ref-wait{width:100%;height:auto;aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid var(--line2)}
+.refs-more{margin-left:auto;display:flex;align-items:center;gap:2px;color:var(--sub);font-size:12.5px;font-weight:600;background:none}
+.refs-more svg{width:14px;height:14px;color:var(--dim)}
+.ref-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.ref-card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:var(--r);padding:8px;display:flex;flex-direction:column;gap:8px}
+.ref-card .rc-img{display:block;width:100%;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.04);padding:0;border:0}
+.ref-card .rc-img img{width:100%;height:100%;object-fit:cover}
+.ref-card .rc-img.empty{display:grid;place-items:center;border:1.5px dashed rgba(255,255,255,.18);color:var(--dim)}
+.ref-card .rc-img.empty svg{width:26px;height:26px}
+.ref-card .rc-t{display:flex;flex-direction:column;padding:0 2px;line-height:1.3}
+.ref-card .rc-t b{font-size:14px}
+.ref-card .rc-t small{color:var(--dim);font-size:11.5px}
+.ref-card .mini{width:100%;justify-content:center}
+.ref-card .mini.on{border-color:var(--pink);color:var(--pink)}
+.rc-lock{display:block;text-align:center;font-size:12px;color:var(--dim);padding:6px 0;border:1px dashed var(--line2);border-radius:10px}
+.body-sum{display:flex;align-items:center;gap:8px;margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:13.5px}
+.body-sum span{color:var(--dim);flex:none}
+.body-sum b{flex:1;min-width:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.body-sum .text-btn{flex:none;margin:0;font-size:13px}
+.sub-h{margin:16px 0 4px;font-weight:700;font-size:14px}
+.sub-h small{color:var(--dim);font-weight:500;font-size:12px;margin-left:6px}
+.rp-old{display:flex;align-items:center;gap:10px;margin:4px 0 12px;color:var(--sub);font-size:13px}
+.rp-old img{width:44px;height:58px;object-fit:cover;border-radius:10px;border:1px solid var(--line2)}
+.cand-grid.tall .cand{aspect-ratio:9/16}
+.ref-card.tall .rc-img img{object-fit:contain}
+.refs-row .tall img{object-position:50% 12%}
+.rp-old.tall img{height:78px}
 .refs-row img{width:100%;height:100%;object-fit:cover}
 .ref-add{display:grid;place-items:center;border:1.5px dashed rgba(255,255,255,.2)!important;color:var(--dim)}
 .ref-wait{width:56px;height:56px;border-radius:14px;border:1.5px dashed rgba(255,79,216,.45);display:grid;place-items:center;background:rgba(255,79,216,.06)}
@@ -383,7 +409,7 @@ const MODEL_FALLBACKS = {
 // 예전 기본값·종료된 모델: 저장돼 있어도 새 기본값을 쓰게 함
 const OLD_MODELS = ['gemini-omni-flash-preview', 'gemini-omni-1.1-flash'];
 const COST = { img: { '1K': 0.034, '2K': 0.05 }, vidSec: { '720p': 0.07, '1080p': 0.104 }, vidLen: 8 }; // USD, 추정 (Omni 1.2 기준)
-const MAX_REFS = 4;
+const MAX_REFS = 7; // 대표 얼굴 1 + 기준 칸 6
 
 const SCENES = [
   { id: 'cafe', e: '☕', ko: '카페', en: 'sitting by a big window in a cozy sunlit café, holding a latte, warm afternoon light, candid relaxed smile, shallow depth of field' },
@@ -424,17 +450,43 @@ const TWEAKS = ['더 귀엽게', '더 시크하게', '더 성숙하게', '더 �
 const GENDERS = [['auto', '자동'], ['female', '여성'], ['male', '남성']];
 const AGES = [['auto', '자동'], ['22', '20대 초반'], ['26', '20대 중반'], ['29', '20대 후반'], ['33', '30대 초반'], ['37', '30대 후반']];
 const ANGLES = ['looking straight at the camera', 'with a slight three-quarter turn, eyes to the camera', 'with the head tilted slightly, eyes to the camera', 'with a gentle three-quarter angle and a soft smile'];
-// ----- 기준 사진 세트: 고른 얼굴로 각도·전신 사진을 더 만들어 얼굴을 일정하게 (중요한 순서) -----
+// ----- 기준 사진: 대표 얼굴(처음 고른 얼굴) + 얼굴·몸을 여러 각도에서 보여 주는 6칸 -----
 const REF_SHOTS = [
+  { id: 'closeup', ko: '얼굴 확대', en: 'tight close-up of the face from the front, the face filling most of the frame, eyes looking at the camera, every facial detail clearly visible', ratio: '3:4' },
   { id: 'side34', ko: '3/4 각도', en: 'head-and-shoulders portrait in a three-quarter view, the head turned about 45 degrees to the side, eyes toward the camera', ratio: '3:4' },
-  { id: 'full', ko: '전신', en: 'full-body shot, standing naturally and facing the camera, the whole body visible from head to toe including the shoes', ratio: '9:16' },
   { id: 'profile', ko: '옆모습', en: 'head-and-shoulders portrait in a clean side profile, facing to the side', ratio: '3:4' },
+  { id: 'upper', ko: '상반신', en: 'upper-body shot from the waist up, facing the camera with the arms relaxed, showing the shoulders, arms and body shape', ratio: '3:4', body: true },
+  { id: 'full', ko: '전신', en: 'full-body shot, standing naturally and facing the camera, the whole body visible from head to toe including the shoes', ratio: '9:16', body: true },
+  { id: 'fullside', ko: '전신 옆모습', en: 'full-body shot in a side view, standing naturally, the whole body visible from head to toe including the shoes, showing the posture and body silhouette', ratio: '9:16', body: true },
+];
+// 기준 사진 후보 4장의 표정 (고를 때 조금씩 다르게)
+const REF_VARIANTS = ['a natural, relaxed expression with a slight smile', 'a calm, neutral expression', 'a gentle closed-mouth smile', 'a bright, friendly smile'];
+const BODY_TYPES = [
+  { id: 'auto', ko: '자동', en: '' },
+  { id: 'slim', ko: '마른', en: 'slim, slender build' },
+  { id: 'average', ko: '보통', en: 'average, natural build' },
+  { id: 'athletic', ko: '탄탄한', en: 'athletic, toned build' },
+  { id: 'muscular', ko: '근육질', en: 'muscular, strong build with broad shoulders' },
+  { id: 'curvy', ko: '볼륨감', en: 'curvy figure with an hourglass silhouette' },
+  { id: 'chubby', ko: '통통', en: 'soft, slightly chubby build' },
 ];
 const refLabel = shot => `★ 기준 · ${shot.ko}`;
-// 아직 없는 각도·전신 사진 (기준 사진 칸이 남은 만큼만)
-function missingRefShots(ch) {
-  const have = new Set((ch.refIds || []).map(id => (S.media.find(m => m.id === id) || {}).label));
-  return REF_SHOTS.filter(sh => !have.has(refLabel(sh))).slice(0, Math.max(0, MAX_REFS - (ch.refIds || []).length));
+// 사진이 어느 기준 칸인지 (새 사진은 shot, 예전 사진은 라벨로 알아봐요)
+const shotOf = m => (m ? m.shot || (REF_SHOTS.find(s => refLabel(s) === m.label) || {}).id || null : null);
+// 기준 사진 = 대표 얼굴(refIds 맨 앞, 고정) + 칸별 사진 + 예전에 칸 없이 지정한 사진
+function refSlots(ch, metas) {
+  const list = metas || S.media, get = id => list.find(m => m.id === id);
+  const ids = (ch && ch.refIds) || [], used = new Set(ids.slice(0, 1));
+  const slots = REF_SHOTS.map(shot => {
+    const id = ids.find(x => !used.has(x) && shotOf(get(x)) === shot.id);
+    if (id) used.add(id);
+    return { shot, id: id || null, m: id ? get(id) || null : null };
+  });
+  return { faceId: ids[0] || null, face: get(ids[0]) || null, slots, extras: ids.filter(x => !used.has(x)).map(get).filter(Boolean) };
+}
+// 아직 비어 있는 칸 (남은 자리만큼)
+function missingRefShots(ch, metas) {
+  return refSlots(ch, metas).slots.filter(s => !s.id).map(s => s.shot).slice(0, Math.max(0, MAX_REFS - ((ch && ch.refIds) || []).length));
 }
 // ----- 영상 연출 (상세 설정) -----
 const CAMERAS = [
@@ -536,6 +588,7 @@ const ICONS = {
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.6v.4"/>',
   wand: '<path d="M5 19L17 7M15 5l4 4"/><path d="M7 3v3M5.5 4.5h3M19 14v3M17.5 15.5h3"/>',
   upload: '<path d="M12 15V4M7 9l5-5 5 5"/><path d="M5 20h14"/>',
+  copy: '<rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M15 9V6.5A2.5 2.5 0 0 0 12.5 4h-6A2.5 2.5 0 0 0 4 6.5v6A2.5 2.5 0 0 0 6.5 15H9"/>',
 };
 const icon = (n, c = '') => `<svg class="i ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n] || ''}</svg>`;
 
@@ -732,7 +785,9 @@ Return ONLY a JSON object with exactly these keys:
 "key_features_en": ["the same 4-6 features in English, one per Korean phrase, very specific, for an image generator"],
 "appearance_en": "100-160 words. Precise physical description of the NEW person for an image generator, feature by feature: overall look and ethnicity, face shape and jawline, cheekbones, eyes, eyelids, brows, nose, lips, skin, hair, makeup or grooming, height and build. No names, no celebrity references.",
 "style_en": "20-40 words: signature fashion style and color palette",
-"vibe_en": "10-20 words: aura and typical expression"}`;
+"vibe_en": "10-20 words: aura and typical expression",
+"height_cm": an integer, a natural height in cm for the new person that fits the taste (women about 155-175, men about 168-188),
+"body_type": exactly one of "slim", "average", "athletic", "muscular", "curvy", "chubby" (what the photos suggest; if bodies are not visible, what suits the overall vibe)}`;
 }
 // 고른 얼굴(기준 얼굴)을 정밀하게 글로 묘사 → 사진·영상을 만들 때 기준 사진과 함께 넣어 얼굴을 일정하게
 function facePrompt() {
@@ -772,7 +827,7 @@ async function ensureFace(charId) {
   if (faceBusy.has(charId)) return faceBusy.get(charId);
   const job = (async () => {
     try {
-      const id = ch.coverId || (ch.refIds || [])[0];
+      const id = (ch.refIds || [])[0] || ch.coverId;
       if (!id) return null;
       const { blob } = await resizeBlob(await getBlob(id), 768, 0.9);
       const face = await describeFace(blob, { id: uid(), lb: '얼굴 특징 분석', ch: charId });
@@ -800,6 +855,175 @@ async function scoreCandidates() {
     done.forEach((cd, i) => { const r = res[i]; if (r) Object.assign(cd, r); });
   } catch (e) { console.warn('taste score failed', e); }
   finally { if (S.create === c) { c.scoring = false; renderSoon(); } }
+}
+
+// ----- 몸 (키·체형): 분석 결과 → 설정 → 사진·영상·기준 사진 프롬프트 -----
+function parseBody(r) {
+  const h = Math.round(Number(r && r.height_cm));
+  const t = String((r && r.body_type) || '').toLowerCase().trim();
+  return { height: h >= 140 && h <= 200 ? h : '', body: t !== 'auto' && BODY_TYPES.some(b => b.id === t) ? t : 'auto', bodyNote: '' };
+}
+function bodyText(p) {
+  if (!p) return '';
+  const out = [], male = p.gender === 'male', h = Math.round(Number(p.height));
+  if (h >= 140 && h <= 200) out.push(`about ${h} cm tall (${male ? (h >= 183 ? 'tall' : h <= 168 ? 'shorter than average' : 'average height') : (h >= 170 ? 'tall' : h <= 157 ? 'petite' : 'average height')} for a ${male ? 'man' : 'woman'})`);
+  const b = BODY_TYPES.find(x => x.id === p.body);
+  if (b && b.en) out.push(b.en);
+  const note = String(p.bodyNote || '').trim();
+  if (note) out.push(`body notes from the user (Korean): ${note}`);
+  return out.join('; ');
+}
+const bodyLine = p => { const t = bodyText(p); return t ? `Body (keep the same in every image; this overrides any height or build in the notes): ${t}\n` : ''; };
+const bodyKo = p => {
+  const h = Math.round(Number(p && p.height)), b = BODY_TYPES.find(x => x.id === (p && p.body));
+  return [h >= 140 && h <= 200 ? `${h}cm` : '', b && b.id !== 'auto' ? b.ko : '', String((p && p.bodyNote) || '').trim()].filter(Boolean).join(' · ') || '자동 (외모 설명대로)';
+};
+
+// ----- 기준 사진 칸 관리 (만들기·바꾸기·지정) — 유료·무료 공통 -----
+// 버전마다 다른 부분: refCanGen · refNeedKey · refInputs · refGen · refOp · refDoneNote · refCostNote
+const charMetas = charId => DB.byIndex('media', 'charId', charId);
+const refLocks = new Map();
+function withRefLock(charId, fn) {
+  const run = (refLocks.get(charId) || Promise.resolve()).then(fn, fn);
+  refLocks.set(charId, run.catch(() => {}));
+  return run;
+}
+function syncLive(m) {
+  const live = S.media.find(x => x.id === m.id);
+  if (!live || live === m) return;
+  Object.assign(live, m);
+  if (!('shot' in m)) delete live.shot;
+}
+// 참고로 넣을 기준 사진 순서: 대표 얼굴 → (몸 사진이면 몸 칸 먼저) → 나머지
+function orderedRefIds(ch, { body = false, exclude = [] } = {}, metas) {
+  const { faceId, slots, extras } = refSlots(ch, metas), ex = new Set(exclude);
+  const face = slots.filter(x => x.id && !x.shot.body).map(x => x.id), bod = slots.filter(x => x.id && x.shot.body).map(x => x.id);
+  const order = [faceId, ...(body ? [...bod, ...face] : [...face, ...bod]), ...extras.map(m => m.id), ...((ch && ch.refIds) || [])];
+  return order.filter((id, i) => id && !ex.has(id) && order.indexOf(id) === i);
+}
+async function saveRefMedia(charId, shot, blob, prompt) {
+  const thumb = await makeThumb(blob);
+  const m = await saveMediaRec({ charId, kind: 'image', blob, thumb, label: refLabel(shot), prompt, ratio: shot.ratio,
+    extra: { shot: shot.id, ...(blob.usd != null ? { usd: blob.usd, est: !!blob.est } : {}) } });
+  if (S.recent[charId]) S.recent[charId] = S.recent[charId].filter(x => x !== m.id); // '방금 만든 사진'에는 안 보이게
+  if (S.charId === charId && !S.media.some(x => x.id === m.id)) S.media.unshift(m);
+  return m;
+}
+async function unmarkRef(m, shot) {
+  if (!m) return;
+  delete m.shot;
+  if (shot && m.label === refLabel(shot)) m.label = `이전 기준 · ${shot.ko}`;
+  await DB.put('media', m); syncLive(m);
+}
+// 사진 한 장을 어느 칸의 기준 사진으로 (그 칸에 있던 사진은 기준에서 빠지고 갤러리에 남아요)
+function setSlotRef(charId, shotId, mediaId) {
+  return withRefLock(charId, async () => {
+    const ch = S.chars.find(c => c.id === charId); if (!ch) return false;
+    const metas = await charMetas(charId);
+    const shot = REF_SHOTS.find(x => x.id === shotId);
+    const { slots, extras } = refSlots(ch, metas);
+    const slot = slots.find(x => x.shot.id === shotId);
+    let ids = [...ch.refIds];
+    if (ids[0] === mediaId) return false; // 대표 얼굴은 칸에 넣지 않아요
+    if (ids.includes(mediaId) && (!slot || slot.id !== mediaId)) ids = ids.filter(x => x !== mediaId);
+    if (slot && slot.id && slot.id !== mediaId) {
+      const k = ids.indexOf(slot.id);
+      if (k >= 0) ids[k] = mediaId; else ids.push(mediaId);
+      await unmarkRef(metas.find(x => x.id === slot.id), shot);
+    } else if (!ids.includes(mediaId)) {
+      if (ids.length < MAX_REFS) ids.push(mediaId);
+      else if (extras.length) ids[ids.indexOf(extras[extras.length - 1].id)] = mediaId;
+      else return false;
+    }
+    const m = metas.find(x => x.id === mediaId);
+    if (m && m.shot !== shotId) { m.shot = shotId; await DB.put('media', m); syncLive(m); }
+    ch.refIds = ids; ch.updatedAt = Date.now();
+    await DB.put('chars', ch);
+    return true;
+  });
+}
+// 빈 칸(또는 지정한 칸)의 기준 사진을 한 장씩 자동으로 만들어 넣어요
+async function makeRefSet(charId, { shots: want = null, replace = false } = {}) {
+  if (S.refJob || !refCanGen()) return;
+  const ch0 = S.chars.find(c => c.id === charId); if (!ch0) return;
+  const metas = await charMetas(charId);
+  const shots = want || missingRefShots(ch0, metas);
+  if (!shots.length) return;
+  const op = refOp(`기준 사진 ${shots.length}장${replace ? ' 다시' : ''} (${shots.map(x => x.ko).join('·')})`, charId);
+  S.refJob = { charId, total: shots.length, done: 0, startedAt: Date.now(), shots: shots.map(x => x.id) };
+  renderSoon(); updateWakeLock();
+  await ensureFace(charId);
+  const ch = S.chars.find(c => c.id === charId) || ch0;
+  // 다시 만드는 칸의 예전 사진은 참고하지 않아요 (몸 설정을 바꿨을 때 예전 몸을 따라 하지 않게)
+  const exclude = replace ? refSlots(ch, metas).slots.filter(x => x.id && shots.some(y => y.id === x.shot.id)).map(x => x.id) : [];
+  let refs;
+  try { refs = await refInputs(ch, orderedRefIds(ch, { body: shots.some(x => x.body), exclude }, metas)); }
+  catch (e) { S.refJob = null; updateWakeLock(); render(); return showError(e); }
+  const results = await Promise.allSettled(shots.map(async shot => {
+    const prompt = refSetPrompt(ch, shot);
+    const blob = await refGen({ refs, prompt, ratio: shot.ratio, op });
+    const m = await saveRefMedia(charId, shot, blob, prompt);
+    await setSlotRef(charId, shot.id, m.id);
+    if (S.refJob) S.refJob.done++;
+    renderSoon();
+  }));
+  S.refJob = null; updateWakeLock(); render();
+  const fails = results.filter(r => r.status === 'rejected');
+  if (fails.length === shots.length) showError(fails[0].reason, '기준 사진 만들기 실패');
+  else if (fails.length) toast(`기준 사진 ${shots.length - fails.length}장 완성, ${fails.length}장 실패${refDoneNote(op)}`, 3500);
+  else toast(`기준 사진 ${shots.length}장이 준비됐어요 ★${refDoneNote(op)}`, 3500);
+}
+// 한 칸을 바꾸기: 후보 4장(고른 1장은 남기고 3장)을 만들어 고르게 해요
+async function startRefPick(charId, shotId, again = false) {
+  const ch = S.chars.find(c => c.id === charId), shot = REF_SHOTS.find(x => x.id === shotId);
+  if (!ch || !shot) return;
+  if (!refCanGen()) return refNeedKey();
+  let rp = S.refPick;
+  if (!(again && rp && rp.charId === charId && rp.shotId === shotId)) {
+    if (rp) rp.cands.forEach(c => c.url && URL.revokeObjectURL(c.url));
+    const slot = refSlots(ch).slots.find(x => x.shot.id === shotId);
+    rp = S.refPick = { charId, shotId, oldId: slot ? slot.id : null, cands: [], sel: -1 };
+  }
+  if (rp.busy) return;
+  const keep = rp.sel >= 0 && rp.cands[rp.sel] && rp.cands[rp.sel].status === 'done' ? rp.cands[rp.sel] : null;
+  rp.cands.forEach(c => { if (c !== keep && c.url) URL.revokeObjectURL(c.url); });
+  const fresh = Array.from({ length: keep ? 3 : 4 }, () => ({ status: 'loading' }));
+  rp.cands = keep ? [keep, ...fresh] : fresh;
+  rp.sel = keep ? 0 : -1;
+  rp.op = refOp(`기준 사진 고르기 · ${shot.ko} ${fresh.length}장`, charId);
+  rp.busy = true;
+  if (S.view !== 'refpick') go('refpick'); else render();
+  updateWakeLock();
+  await ensureFace(charId);
+  const cur = S.chars.find(c => c.id === charId) || ch;
+  try { rp.refs = await refInputs(cur, orderedRefIds(cur, { body: !!shot.body, exclude: rp.oldId ? [rp.oldId] : [] }, await charMetas(charId))); }
+  catch (e) { fresh.forEach(c => { c.status = 'error'; c.error = e; }); rp.busy = false; updateWakeLock(); return renderSoon(); }
+  await Promise.allSettled(fresh.map((cd, k) => runRefCand(rp, cd, cur, shot, keep ? k + 1 : k)));
+  rp.busy = false; updateWakeLock();
+  if (S.refPick === rp) { renderSoon(); const note = refDoneNote(rp.op); if (note) toast(`후보 ${fresh.length}장 완성${note}`, 3000); }
+}
+async function runRefCand(rp, cd, ch, shot, k) {
+  cd.status = 'loading'; cd.error = null; renderSoon();
+  try {
+    const prompt = refSetPrompt(ch, shot, REF_VARIANTS[k % REF_VARIANTS.length]);
+    const blob = await refGen({ refs: rp.refs, prompt, ratio: shot.ratio, op: rp.op });
+    cd.blob = blob; cd.url = URL.createObjectURL(blob); cd.prompt = prompt; cd.status = 'done';
+  } catch (e) { cd.status = 'error'; cd.error = e; }
+  renderSoon();
+}
+async function applyRefPick() {
+  const rp = S.refPick, cd = rp && rp.cands[rp.sel];
+  if (!cd || cd.status !== 'done' || rp.saving) return;
+  const shot = REF_SHOTS.find(x => x.id === rp.shotId);
+  rp.saving = true; render();
+  try {
+    const m = await saveRefMedia(rp.charId, shot, cd.blob, cd.prompt);
+    if (!(await setSlotRef(rp.charId, shot.id, m.id))) throw new Error('기준 사진 자리가 없어요. 기준 사진 하나를 먼저 빼 주세요');
+    rp.cands.forEach(c => c.url && URL.revokeObjectURL(c.url));
+    S.refPick = null;
+    toast(`${shot.ko} 기준 사진을 ${rp.oldId ? '바꿨어요' : '정했어요'} ★`);
+    if (((history.state && history.state.d) || 0) > 0) history.back(); else go('refs', {}, { replace: true });
+  } catch (e) { rp.saving = false; render(); showError(e); }
 }
 
 /* ================= 상태 ================= */
@@ -1086,6 +1310,8 @@ function interFail(inter) {
   const st = (inter && inter.status) || '알 수 없음';
   const err = new ApiError(reason || `구글이 생성을 마치지 못했어요 (상태: ${st}, 이유는 알려주지 않음)`,
     { code: reason && /safety|block|prohibit|policy|recogni|responsible|violat|harm|sensitive/i.test(reason) ? 'BLOCKED' : 'GEN_FAILED', unexplained: !reason });
+  const ge = (inter && (inter.error || (Array.isArray(inter.errors) && inter.errors[0]))) || {};
+  err.gcode = typeof ge === 'object' ? String(ge.code || ge.status || '') : '';
   try { err.raw = JSON.stringify(sanitizeInter(inter)).slice(0, 1600); } catch {}
   return err;
 }
@@ -1155,6 +1381,14 @@ function recordCost(kind, inter, op, fallback = 0, n) {
   return { usd, est };
 }
 const newOp = (lb, ch) => ({ id: uid(), lb, ch: ch || null });
+// 기준 사진 공통 코드가 쓰는 유료 버전 연결부
+const refCanGen = () => !!getKey();
+const refNeedKey = () => needKey();
+const refInputs = (ch, ids) => loadRefs(ch, ids);
+const refGen = ({ refs, prompt, ratio, op }) => generateImage({ refs, prompt, ratio, size: LS.get('imgSize', '1K'), op });
+const refOp = (lb, chId) => newOp(lb, chId);
+const refDoneNote = op => (op ? ' · ' + costLine(Costs.opSum(op.id)) : '');
+const refCostNote = n => `약 ${usd((COST.img[LS.get('imgSize', '1K')] || COST.img['1K']) * n)}`;
 
 /* ----- 프롬프트 ----- */
 const who = p => `a ${p.age}-year-old ${p.gender === 'male' ? 'man' : 'woman'}`;
@@ -1173,22 +1407,23 @@ Person: ${who(p)}. ${p.appearance}
 ${keyFeatureLines(p)}Soft flattering light, clean softly blurred neutral background, natural skin texture, real-photo look.
 ${SAFE_TAIL}`;
 }
-function refSetPrompt(ch, shot) {
+function refSetPrompt(ch, shot, variant) {
+  const bt = bodyText(ch);
   return `The attached reference image(s) all show the same fictional person named ${ch.name}, ${who(ch)} (not a real person).
-Create a NEW photorealistic reference photo of exactly this person for a character reference sheet. Keep the identity identical to the references: same face shape, eyes, eyebrows, nose, lips, skin tone, hairstyle and hair color, and body proportions.
-${ch.face ? `Face identity (keep exactly): ${ch.face}\n` : ''}Appearance notes: ${ch.appearance}
-If any written note conflicts with the reference images, follow the reference images.
+Create a NEW photorealistic reference photo of exactly this person for a character reference sheet. Keep the identity identical to the references: same face shape, eyes, eyebrows, nose, lips, skin tone, hairstyle and hair color${bt ? '' : ', and body proportions'}.
+${ch.face ? `Face identity (keep exactly): ${ch.face}\n` : ''}${bodyLine(ch)}Appearance notes: ${ch.appearance}
+If any written note conflicts with the reference images, follow the reference images for the face${bt ? ' and the Body line for height and build' : ''}.
 Framing: ${shot.en}
-Outfit: their signature style - ${ch.style}
+Outfit: ${shot.body ? `a simple, well-fitted everyday outfit in their signature style (${ch.style}) that shows the body shape and proportions clearly` : `their signature style - ${ch.style}`}
 Background: plain light-gray studio backdrop with soft, even lighting, so the face and body are clearly visible.
-Expression: natural and relaxed, with a slight smile.
+Expression: ${variant || 'natural and relaxed, with a slight smile'}.
 Photography: realistic skin texture, sharp focus, high detail. Aspect ratio ${shot.ratio}.
 Only this one person. ${SAFE_TAIL}`;
 }
 function scenePrompt(ch, { scene, shot, outfit, ratio }) {
   return `The attached reference image(s) all show the same fictional person named ${ch.name}, ${who(ch)} (not a real person).
 Create a NEW photorealistic photo of exactly this person. Keep the identity identical to the references: same face shape, eyes, eyebrows, nose, lips, skin tone, hairstyle and hair color, and body proportions.
-${ch.face ? `Face identity (keep exactly): ${ch.face}\n` : ''}Appearance notes: ${ch.appearance}
+${ch.face ? `Face identity (keep exactly): ${ch.face}\n` : ''}${bodyLine(ch)}Appearance notes: ${ch.appearance}
 If any written note conflicts with the reference images, follow the reference images.
 Scene: ${scene}
 Framing: ${shot}
@@ -1209,6 +1444,7 @@ function videoPrompt(ch, f) {
     L.push(`Create a realistic ${f.secs}-second video of the same person shown in the reference images, ${who}.`);
     L.push('Use the reference images only to keep the face, identity and hairstyle exactly the same. Do not show the reference photos themselves.');
     if (identityText(ch)) L.push(`Identity details: ${identityText(ch)}`);
+    if (bodyText(ch)) L.push(`Body: ${bodyText(ch)}`);
     L.push(`Setting: ${where || 'a natural setting that suits the person'}`);
     L.push(`Outfit: ${outfit || `their signature style - ${ch.style}`}`);
   } else {
@@ -1246,6 +1482,7 @@ function openingPrompt(ch, f) {
     L.push(`Create a realistic ${OPEN_SECS}-second opening shot of the same person shown in the reference images, ${who}.`);
     L.push('Use the reference images only to keep the face, identity and hairstyle exactly the same. Do not show the reference photos themselves.');
     if (identityText(ch)) L.push(`Identity details: ${identityText(ch)}`);
+    if (bodyText(ch)) L.push(`Body: ${bodyText(ch)}`);
     L.push(`Setting: ${where || 'a natural setting that suits the person'}`);
     L.push(`Outfit: ${String(f.outfit || '').trim() || `their signature style - ${ch.style}`}`);
   } else {
@@ -1324,6 +1561,7 @@ async function analyzePhotos(photos, prefs) {
     appearance: String(j.appearance_en || ''),
     style: String(j.style_en || ''),
     vibe: String(j.vibe_en || ''),
+    ...parseBody(j),
   };
 }
 async function generateImage({ refs = [], prompt, ratio = '3:4', size, op }) {
@@ -1342,9 +1580,9 @@ async function generateImage({ refs = [], prompt, ratio = '3:4', size, op }) {
   if (cost) { blob.usd = cost.usd; blob.est = cost.est; }
   return blob;
 }
-async function loadRefs(ch) {
+async function loadRefs(ch, ids) {
   const out = [];
-  for (const id of (ch.refIds || []).slice(0, MAX_REFS)) {
+  for (const id of (ids || orderedRefIds(ch)).slice(0, MAX_REFS)) {
     if (!RefB64.has(id)) {
       try { const b = await getBlob(id); const { blob } = await resizeBlob(b, 1024, 0.9); RefB64.set(id, await blobToB64(blob)); } catch { continue; }
     }
@@ -1367,7 +1605,8 @@ async function saveJob(job) {
 }
 function jobErrDetail(job, e) {
   const L = [String((e && e.message) || e)];
-  L.push(`단계: ${STEP_KO[job.step] || STEP_KO.main} · ${job.mode === 'scene' ? '새 장면' : '사진에서 시작'}${job.hasLine ? ' · 대사 있음' : ''} · ${job.res || ''} · ${job.secs || ''}초${job.model ? ' · ' + job.model : ''}`);
+  L.push(`단계: ${STEP_KO[job.step] || STEP_KO.main} · ${job.mode === 'scene' ? '새 장면' : '사진에서 시작'}${job.mode === 'scene' && job.refsUsed ? ` · 기준 사진 ${job.refsUsed}장` : ''}${job.hasLine ? ' · 대사 있음' : ''} · ${job.res || ''} · ${job.secs || ''}초${job.model ? ' · ' + job.model : ''}`);
+  if (job.notes && job.notes.length) L.push('자동 재시도: ' + job.notes.join(' / '));
   if (job.firstError) L.push('처음 시도: ' + job.firstError);
   if (e && e.raw) L.push('구글 응답: ' + e.raw);
   return L.join('\n').slice(0, 2400);
@@ -1407,6 +1646,15 @@ function recordVideoCost(job, inter) {
   if (c) { job.usd = (job.usd || 0) + c.usd; job.est = !!(job.est || c.est); }
 }
 const durStr = s => `${Math.max(3, Math.min(15, Math.round(s || COST.vidLen)))}s`;
+// 새 장면 영상의 기준 사진: Omni 1.2는 '한 인물당 최대 3장'까지라 3장만 보냄
+// (대표 얼굴 → 전신 → 3/4 각도 순). 그래도 거절되면 대표 얼굴 1장으로 한 번 더.
+const VIDEO_REFS = 3;
+const VIDEO_SHOT_ORDER = ['full', 'side34', 'upper', 'closeup', 'profile', 'fullside'];
+function videoRefIds(ch, metas) {
+  const { faceId, slots, extras } = refSlots(ch, metas);
+  const order = [faceId, ...VIDEO_SHOT_ORDER.map(id => (slots.find(x => x.shot.id === id) || {}).id), ...extras.map(m => m.id), ...((ch && ch.refIds) || [])];
+  return order.filter((id, i) => id && order.indexOf(id) === i).slice(0, VIDEO_REFS);
+}
 // 지금 단계에 맞는 요청 만들기 (큰 영상도 받을 수 있게 URI 전송 요청)
 async function stepBody(job) {
   if (job.step === 'speak') {
@@ -1423,7 +1671,9 @@ async function stepBody(job) {
     // 새 장면: 기준 사진들은 얼굴 참고용 (첫 장면으로 쓰지 않음)
     const ch = S.chars.find(c => c.id === job.charId);
     if (!ch) throw new ApiError('인물을 찾지 못했어요');
-    const refs = await loadRefs({ refIds: (job.refIds && job.refIds.length ? job.refIds : ch.refIds) });
+    const ids = job.refIds && job.refIds.length ? job.refIds : videoRefIds(ch);
+    const refs = await loadRefs(ch, ids.slice(0, Math.min(job.refCap || VIDEO_REFS, VIDEO_REFS)));
+    job.refsUsed = refs.length;
     return {
       input: [...refs.map(r => ({ type: 'image', mime_type: r.mime, data: r.b64 })), { type: 'text', text: refHeader(refs.length) + '\n' + text }],
       response_format: rf,
@@ -1490,12 +1740,26 @@ async function stepDone(job, inter) {
     await finishVideoJob(job, inter);
   } catch (e) { await stepFailed(job, e); }
 }
-// 대사가 든 영상이 거절되면(이유 미공개·안전 필터) 한 번은 자동으로 2단계 방식으로 다시 만듦
+// 실패하면 자동으로 한 번씩 다른 방법으로 다시 만듦
+//  ① 새 장면에서 기준 사진 여러 장이 거절되면(INVALID_ARGUMENT 등) → 대표 얼굴 1장으로
+//  ② 대사가 든 영상이 거절되면(이유 미공개·안전 필터) → 2단계(말없는 첫 장면 → 이어서 대사)
+const shortErr = e => String((e && e.message) || e).slice(0, 200) + (e && e.raw ? '\n' + e.raw.slice(0, 700) : '');
+const addNote = (job, t) => { job.notes = [...(job.notes || []), t].slice(-4); };
 async function stepFailed(job, e) {
+  const msg = `${(e && e.message) || e || ''} ${(e && e.gcode) || ''} ${(e && e.raw) || ''}`;
+  const refsRejected = e && !/API.?key/i.test(msg) && (/INVALID_ARGUMENT|problem processing your request/i.test(msg) || (e.status === 400 && /image|reference|input|too many|exceed|maximum/i.test(msg)));
+  if (refsRejected && job.mode === 'scene' && (job.step || 'main') !== 'speak' && (job.refsUsed || 0) > 1 && job.refCap !== 1) {
+    if (!job.firstError) job.firstError = shortErr(e);
+    addNote(job, `기준 사진 ${job.refsUsed}장 거절 → 대표 얼굴 1장으로`);
+    job.refCap = 1;
+    toast('기준 사진 여러 장으로는 거절돼서 대표 얼굴 1장으로 다시 만들고 있어요', 4500);
+    return runStep(job);
+  }
   const refused = e && (e.code === 'GEN_FAILED' || e.code === 'BLOCKED' || (e.status === 400 && /safety|block|prohibit|policy|recogni|responsible|violat|harm|sensitive/i.test(e.message || '')));
   if (refused && (job.step || 'main') === 'main' && job.hasLine && job.openPrompt && job.speakPrompt && !job.viaChain) {
     job.viaChain = true;
-    job.firstError = String((e && e.message) || e).slice(0, 200) + (e && e.raw ? '\n' + e.raw.slice(0, 700) : '');
+    if (!job.firstError) job.firstError = shortErr(e);
+    addNote(job, '대사 영상 거절 → 2단계(첫 장면 → 대사)로');
     job.step = 'open';
     toast('대사 영상이 거절돼서 2단계(첫 장면 → 이어서 대사)로 다시 만들고 있어요', 4500);
     return runStep(job);
@@ -1517,7 +1781,7 @@ function resumeJobs() {
 /* ================= 화면 유지 ================= */
 let wakeLock = null;
 async function updateWakeLock() {
-  const need = !!S.busy || !!S.create.busy || !!S.refJob || S.jobs.some(j => j.status === 'running' || j.status === 'starting');
+  const need = !!S.busy || !!S.create.busy || !!S.refJob || !!(S.refPick && S.refPick.busy) || S.jobs.some(j => j.status === 'running' || j.status === 'starting');
   try {
     if (need && !wakeLock && 'wakeLock' in navigator && document.visibilityState === 'visible') {
       wakeLock = await navigator.wakeLock.request('screen');
@@ -1581,12 +1845,37 @@ const menuSheet = (title, items) =>
   Sheet.show(`${title ? `<h3>${esc(title)}</h3>` : ''}<div class="menu">${items.map(it => `<button class="${it.danger ? 'danger' : ''}" data-sheet-val="${it.act}">${it.icon ? icon(it.icon) : ''}${esc(it.label)}</button>`).join('')}</div><button class="btn btn-ghost full" style="margin-top:14px" data-sheet-val="">닫기</button>`);
 const formSheet = (title, fields, intro = '', okText = '저장') =>
   Sheet.show(`<h3>${esc(title)}</h3>${intro}${fields.map(f => `<div class="field"><label>${esc(f.label)}</label>${f.rows ? `<textarea class="input" rows="${f.rows}" data-field="${f.key}" maxlength="${f.max || 2000}">${esc(f.value)}</textarea>` : `<input class="input" data-field="${f.key}" value="${esc(f.value)}" maxlength="${f.max || 200}">`}</div>`).join('')}<div class="row" style="margin-top:16px"><button class="btn btn-ghost" data-sheet-val="">취소</button><button class="btn btn-primary" data-sheet-submit>${esc(okText)}</button></div>`);
+// 오류 내용 복사 (클립보드가 막힌 브라우저는 임시 입력칸으로 복사)
+async function copyText(text) {
+  try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; } } catch {}
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+    document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, text.length);
+    const ok = document.execCommand('copy'); ta.remove(); return ok;
+  } catch { return false; }
+}
+const copyErrBtn = (cls = 'btn btn-ghost') => `<button class="${cls}" data-act="copyErr">${icon('copy')}복사</button>`;
+const SHEET_ACT = {
+  // 시트에 보이는 오류(제목·안내·자세한 내용)를 한 번에 복사
+  copyErr: async el => {
+    const sh = el.closest('.sheet');
+    const txt = sel => ((sh && sh.querySelector(sel)) || {}).textContent || '';
+    const text = [`[${document.title} 오류 · ${new Date().toLocaleString('ko-KR')}]`, txt('h3'), txt('.err-msg'), txt('pre.raw')].map(x => x.trim()).filter(Boolean).join('\n');
+    if (await copyText(text)) { el.innerHTML = icon('check') + '복사됨'; toast('오류 내용을 복사했어요. 붙여 넣어 보내 주세요'); return; }
+    const pre = sh && sh.querySelector('pre.raw');
+    if (pre) { const d = pre.closest('details'); if (d) d.open = true; const r = document.createRange(); r.selectNodeContents(pre); const w = getSelection(); w.removeAllRanges(); w.addRange(r); }
+    toast('자동 복사가 막혀 있어요. 선택된 글자를 길게 눌러 복사해 주세요', 4000);
+  },
+};
 function showError(e, title = '문제가 생겼어요') {
   console.error(e);
   const msg = friendlyError(e);
   const raw = String((e && e.message) || e || '');
   const noKey = e && e.code === 'NO_KEY';
-  Sheet.show(`<h3>${esc(title)}</h3><p>${esc(msg)}</p>${raw && raw !== msg ? `<details><summary>자세한 오류</summary><pre class="raw">${esc(raw.slice(0, 1500))}</pre></details>` : ''}<div class="row" style="margin-top:14px">${noKey ? `<button class="btn btn-primary" data-sheet-val="settings">설정으로</button>` : `<button class="btn btn-primary" data-sheet-val="">확인</button>`}</div>`)
+  const more = raw && raw !== msg;
+  Sheet.show(`<h3>${esc(title)}</h3><p class="err-msg">${esc(msg)}</p>${more ? `<details><summary>자세한 오류</summary><pre class="raw">${esc(raw.slice(0, 1500))}</pre></details>` : ''}<div class="row" style="margin-top:14px">${more && !noKey ? copyErrBtn() : ''}${noKey ? `<button class="btn btn-primary" data-sheet-val="settings">설정으로</button>` : `<button class="btn btn-primary" data-sheet-val="">확인</button>`}</div>`)
     .then(v => { if (v === 'settings') go('settings'); });
 }
 async function needKey() {
@@ -1791,6 +2080,8 @@ function vCreate2() {
     <div class="field" style="margin-top:2px"><label>이름</label><input class="input" data-bind="create.profile.name" value="${esc(p.name)}" maxlength="12"></div>
     <div class="facts"><span>${p.gender === 'male' ? '남성' : '여성'}</span><span>${p.age}세</span></div>
     ${p.persona ? `<p class="persona-full">${esc(p.persona)}</p>` : ''}
+    <p class="sub-h">몸 <small>기준 사진(상반신·전신)과 사진·영상에 써요</small></p>
+    ${bodyEditor('create.profile', p)}
     <details class="adv"><summary>외모 설명 다듬기 (고급 · 영어)</summary>
       <div class="field"><label>외모</label><textarea class="input" rows="6" data-bind="create.profile.appearance">${esc(p.appearance)}</textarea></div>
       <div class="field"><label>스타일</label><textarea class="input" rows="2" data-bind="create.profile.style">${esc(p.style)}</textarea></div>
@@ -1798,7 +2089,8 @@ function vCreate2() {
     </details>
     <button class="text-btn small" data-act="createStep" data-step="1">← 사진 다시 고르기</button>
   </section>
-  ${bottomBar(`<button class="btn btn-ghost" data-act="analyze">${icon('refresh')} 재분석</button><button class="btn btn-primary" data-act="genCands" data-mode="fresh">${icon('sparkle')} 얼굴 4장 만들기</button>`, `얼굴 4장 약 ${usd(COST.img['1K'] * 4)} · Google 청구`)}`;
+  ${bottomBar(S.create.cands.length ? `<button class="btn btn-ghost" data-act="genCands" data-mode="fresh">${icon('refresh')} 얼굴 새로 4장</button><button class="btn btn-primary" data-act="createStep" data-step="3">${icon('check')} 고르던 얼굴로</button>`
+    : `<button class="btn btn-ghost" data-act="analyze">${icon('refresh')} 재분석</button><button class="btn btn-primary" data-act="genCands" data-mode="fresh">${icon('sparkle')} 얼굴 4장 만들기</button>`, `얼굴 4장 약 ${usd(COST.img['1K'] * 4)} · Google 청구`)}`;
 }
 function vCreate3() {
   const c = S.create, p = c.profile;
@@ -1827,15 +2119,17 @@ function vCreate3() {
     <button class="btn btn-ghost full" style="margin-top:10px" data-act="genCands" data-mode="tweak" ${busy ? 'disabled' : ''}>${icon('wand')} ${hasSel ? '고른 얼굴 기준으로 3장 수정' : '이 느낌으로 새로 4장'}</button>
     <button class="text-btn small" data-act="createStep" data-step="2">← 분석 결과로</button>
   </section>
-  ${bottomBar(`<button class="btn btn-ghost" data-act="genCands" data-mode="fresh" ${busy ? 'disabled' : ''}>${icon('refresh')} 다시</button><button class="btn btn-primary" data-act="saveChar" ${hasSel ? '' : 'disabled'}>${icon('check')} 이 얼굴로 저장</button>`, `얼굴 1장 약 ${usd(COST.img['1K'])} · 저장하면 각도·전신 기준 사진 ${REF_SHOTS.length}장을 자동으로 만들어요 (약 ${usd(COST.img['1K'] * REF_SHOTS.length)})`)}`;
+  <section class="card">
+    <h3 class="card-title">몸 <span class="opt">키·체형</span></h3>
+    <div class="body-sum"><span>지금 설정</span><b>${esc(bodyKo(p))}</b><button class="text-btn" data-act="createStep" data-step="2">바꾸기 ›</button></div>
+    <p class="hint">저장하면 이 얼굴과 몸 설정으로 기준 사진 ${REF_SHOTS.length}장(${REF_SHOTS.map(x => x.ko).join('·')})을 만들어요. 대표 얼굴 말고는 나중에 4장 중에서 골라 바꿀 수 있어요.</p>
+  </section>
+  ${bottomBar(`<button class="btn btn-ghost" data-act="genCands" data-mode="fresh" ${busy ? 'disabled' : ''}>${icon('refresh')} 다시</button><button class="btn btn-primary" data-act="saveChar" ${hasSel ? '' : 'disabled'}>${icon('check')} 이 얼굴로 저장</button>`, `얼굴 1장 약 ${usd(COST.img['1K'])} · 저장하면 얼굴·몸 기준 사진 ${REF_SHOTS.length}장을 자동으로 만들어요 (약 ${usd(COST.img['1K'] * REF_SHOTS.length)})`)}`;
 }
 
 function vChar() {
   const ch = curChar();
   if (!ch) return `<header class="topbar"><button class="icon-btn" data-act="back">${icon('back')}</button><h1>인물</h1></header><div class="empty"><p>인물을 찾을 수 없어요.</p></div>`;
-  const refs = ch.refIds.map(id => S.media.find(m => m.id === id)).filter(Boolean);
-  const rj = S.refJob && S.refJob.charId === ch.id ? S.refJob : null;
-  const need = rj ? [] : missingRefShots(ch);
   return `
   <header class="topbar">
     <button class="icon-btn" data-act="back" aria-label="뒤로">${icon('back')}</button>
@@ -1850,11 +2144,7 @@ function vChar() {
       ${ch.persona ? `<p class="persona">${esc(ch.persona)}</p>` : ''}
     </div>
   </section>
-  <section class="refs">
-    <div class="refs-head">${icon('star')}<b>기준 사진 ${refs.length}/${MAX_REFS}</b><small>얼굴을 똑같이 맞출 때 써요</small></div>
-    <div class="refs-row">${refs.map(r => `<button data-act="openMedia" data-id="${r.id}" data-list="refs"><img src="${r.thumb}" alt=""></button>`).join('')}${rj ? Array.from({ length: rj.total - rj.done }, () => '<span class="ref-wait"><span class="spinner sm"></span></span>').join('') : ''}${!rj && refs.length < MAX_REFS ? `<button class="ref-add" data-act="refHelp" aria-label="기준 사진 추가 방법">${icon('plus')}</button>` : ''}</div>
-    ${rj ? `<p class="hint">각도·전신 기준 사진 만드는 중 · ${rj.done}/${rj.total}</p>` : need.length ? `<button class="ref-make" data-act="makeRefSet">${icon('sparkle')} 각도·전신 기준 사진 만들기 <small>${need.map(x => x.ko).join('·')} · 약 ${usd((COST.img[LS.get('imgSize', '1K')] || COST.img['1K']) * need.length)}</small></button>` : ''}
-  </section>
+  ${refsRow(ch)}
   <nav class="tabs">
     <button class="${S.tab === 'photo' ? 'on' : ''}" data-act="tab" data-tab="photo">${icon('image')}사진</button>
     <button class="${S.tab === 'video' ? 'on' : ''}" data-act="tab" data-tab="video">${icon('film')}영상</button>
@@ -2113,6 +2403,153 @@ function vSettings() {
 }
 
 /* ================= 렌더 ================= */
+// ----- 기준 사진·몸 화면 (유료·무료 공통) -----
+function bodyEditor(path, v) {
+  const cur = (v && v.body) || 'auto';
+  return `<div class="field"><label>키 <span class="opt">cm · 비우면 자동</span></label><input class="input" type="number" inputmode="numeric" min="140" max="200" step="1" data-bind="${path}.height" value="${esc((v && v.height) || '')}" placeholder="예: 168"></div>
+  <div class="field"><label>체형</label><div class="chips">${BODY_TYPES.map(b => `<button class="chip ${cur === b.id ? 'on' : ''}" data-act="set" data-path="${path}.body" data-val="${b.id}">${b.ko}</button>`).join('')}</div></div>
+  <div class="field"><label>그 밖의 몸 특징 <span class="opt">선택</span></label><input class="input" data-bind="${path}.bodyNote" value="${esc((v && v.bodyNote) || '')}" placeholder="예: 다리가 길고 어깨가 좁은 편" maxlength="80"></div>`;
+}
+function refsRow(ch) {
+  const { face, slots, extras } = refSlots(ch);
+  const rj = S.refJob && S.refJob.charId === ch.id ? S.refJob : null;
+  const n = (ch.refIds || []).length, need = rj ? [] : missingRefShots(ch);
+  let room = Math.max(0, MAX_REFS - n);
+  const tile = (m, lb, tall) => `<button ${tall ? 'class="tall" ' : ''}data-act="openMedia" data-id="${m.id}" data-list="refs" aria-label="${esc(lb)}"><img src="${m.thumb}" alt=""></button>`;
+  const tiles = [face ? tile(face, '대표 얼굴') : '',
+    ...slots.map(x => x.m ? tile(x.m, x.shot.ko, x.shot.ratio === '9:16') : rj && (rj.shots || []).includes(x.shot.id) ? '<span class="ref-wait"><span class="spinner sm"></span></span>'
+      : room-- > 0 ? `<button class="ref-add" data-act="openRefs" aria-label="${esc(x.shot.ko)} 기준 사진">${icon('plus')}</button>` : ''),
+    ...extras.map(m => tile(m, '직접 고른 기준'))].join('');
+  return `<section class="refs">
+    <div class="refs-head">${icon('star')}<b>기준 사진 ${n}/${MAX_REFS}</b><button class="refs-more" data-act="openRefs">관리·바꾸기 ${icon('chevR')}</button></div>
+    <div class="refs-row">${tiles}</div>
+    ${rj ? `<p class="hint">기준 사진 만드는 중 · ${rj.done}/${rj.total}</p>` : need.length ? `<button class="ref-make" data-act="makeRefSet">${icon('sparkle')} 빈 기준 사진 ${need.length}장 만들기 <small>${need.map(x => x.ko).join('·')} · ${refCostNote(need.length)}</small></button>` : ''}
+  </section>`;
+}
+function vRefs() {
+  const ch = curChar();
+  if (!ch) return `<header class="topbar"><button class="icon-btn" data-act="back">${icon('back')}</button><h1>기준 사진</h1></header><div class="empty"><p>인물을 찾을 수 없어요.</p></div>`;
+  const { face, slots, extras } = refSlots(ch);
+  const rj = S.refJob && S.refJob.charId === ch.id ? S.refJob : null;
+  const rp = S.refPick && S.refPick.charId === ch.id ? S.refPick : null;
+  const need = rj ? [] : missingRefShots(ch);
+  const card = (m, title, sub, btn, cls = '') => `<div class="ref-card ${cls}">
+      ${m ? `<button class="rc-img" data-act="openMedia" data-id="${m.id}" data-list="refs"><img src="${m.thumb}" alt=""></button>` : `<div class="rc-img empty">${cls.includes('gen') ? '<span class="spinner"></span>' : icon('image')}</div>`}
+      <div class="rc-t"><b>${title}</b><small>${sub}</small></div>${btn}</div>`;
+  return `
+  <header class="topbar"><button class="icon-btn" data-act="back" aria-label="뒤로">${icon('back')}</button><h1>${esc(ch.name)}의 기준 사진</h1></header>
+  <section class="card">
+    <p class="sub">사진·영상을 만들 때 이 사진들을 보고 얼굴과 몸을 똑같이 맞춰요. 처음 고른 대표 얼굴 말고는 ‘바꾸기’로 새 후보 4장을 만들어 고를 수 있어요.</p>
+    <div class="body-sum"><span>몸</span><b>${esc(bodyKo(ch))}</b><button class="text-btn" data-act="openBody">몸 설정 ›</button></div>
+    ${rj ? `<p class="hint"><span class="spinner sm"></span> 기준 사진 만드는 중 · ${rj.done}/${rj.total}</p>` : need.length ? `<button class="ref-make" data-act="makeRefSet">${icon('sparkle')} 빈 칸 ${need.length}장 한 번에 만들기 <small>${refCostNote(need.length)}</small></button>` : ''}
+  </section>
+  <div class="ref-grid">
+    ${card(face, '대표 얼굴', '처음 고른 얼굴 · 고정', '<span class="rc-lock">고정</span>')}
+    ${slots.map(x => {
+      const gen = !!(rj && (rj.shots || []).includes(x.shot.id)), picking = !!(rp && rp.shotId === x.shot.id);
+      const btn = picking ? '<button class="mini on" data-act="openRefPick">고르는 중 ›</button>'
+        : `<button class="mini" data-act="refPick" data-shot="${x.shot.id}" ${gen ? 'disabled' : ''}>${x.m ? '바꾸기' : '만들기'}</button>`;
+      return card(x.m, x.shot.ko, x.shot.body ? '몸 기준' : '얼굴 기준', btn, [gen ? 'gen' : '', x.shot.ratio === '9:16' ? 'tall' : ''].join(' ').trim());
+    }).join('')}
+    ${extras.map(m => card(m, '직접 고른 기준', '칸 없이 지정한 사진', `<button class="mini" data-act="dropRef" data-id="${m.id}">빼기</button>`)).join('')}
+  </div>
+  <p class="hint">갤러리에서 사진을 열고 ‘기준 지정’을 누르면 원하는 칸에 넣을 수도 있어요. 바꾼 예전 사진은 갤러리에 남아요.</p>`;
+}
+function vRefPick() {
+  const rp = S.refPick, ch = rp && S.chars.find(c => c.id === rp.charId), shot = rp && REF_SHOTS.find(x => x.id === rp.shotId);
+  if (!rp || !ch || !shot) return `<header class="topbar"><button class="icon-btn" data-act="back" aria-label="뒤로">${icon('back')}</button><h1>기준 사진 고르기</h1></header><div class="empty"><div class="big">🖼️</div><p>고를 후보가 없어요.<br>기준 사진 화면에서 ‘바꾸기’를 눌러 주세요.</p></div>`;
+  const old = rp.oldId ? S.media.find(m => m.id === rp.oldId) : null;
+  const tiles = rp.cands.map((cd, i) => cd.status === 'done'
+    ? `<button class="cand ${rp.sel === i ? 'sel' : ''}" data-act="selRefCand" data-i="${i}"><img src="${cd.url}" alt="후보 ${i + 1}">${rp.sel === i ? `<span class="ck">${icon('check')}</span>` : ''}</button>`
+    : cd.status === 'error' ? `<div class="cand err"><div class="state">${icon('info')}<span>${esc(friendlyError(cd.error).slice(0, 90))}</span><button class="mini" data-act="retryRefCand" data-i="${i}">다시 시도</button></div></div>`
+    : '<div class="cand shimmer"><div class="state"><div class="spinner"></div><span>그리는 중</span></div></div>').join('');
+  const hasSel = rp.sel >= 0 && rp.cands[rp.sel] && rp.cands[rp.sel].status === 'done';
+  const nNew = hasSel ? 3 : 4;
+  return `
+  <header class="topbar"><button class="icon-btn" data-act="back" aria-label="뒤로">${icon('back')}</button><h1>${esc(shot.ko)} 고르기</h1></header>
+  <section class="card">
+    <h3 class="card-title">마음에 드는 ${esc(shot.ko)} 사진을 골라 주세요</h3>
+    <p class="sub">${shot.body ? `대표 얼굴과 몸 설정(${esc(bodyKo(ch))})을 보고 만들었어요.` : '대표 얼굴을 보고 만들었어요.'} 다시 만들어도 고른 사진은 남겨둬요.</p>
+    ${old ? `<div class="rp-old ${shot.ratio === '9:16' ? 'tall' : ''}"><img src="${old.thumb}" alt=""><span>지금 쓰는 사진</span></div>` : ''}
+    <div class="cand-grid ${shot.ratio === '9:16' ? 'tall' : ''}">${tiles}</div>
+  </section>
+  ${bottomBar(`<button class="btn btn-ghost" data-act="remakeRefPick" ${rp.busy ? 'disabled' : ''}>${icon('refresh')} 다시</button><button class="btn btn-primary" data-act="applyRefPick" ${hasSel && !rp.saving ? '' : 'disabled'}>${icon('check')} ${old ? '이걸로 바꾸기' : '이걸로 정하기'}</button>`, `다시: ${hasSel ? '고른 1장은 남기고 ' : ''}${nNew}장 새로 · ${refCostNote(nNew)}`)}`;
+}
+function vBody() {
+  const f = S.bodyForm, ch = f && S.chars.find(c => c.id === f.charId);
+  if (!ch) return `<header class="topbar"><button class="icon-btn" data-act="back">${icon('back')}</button><h1>몸 설정</h1></header><div class="empty"><p>인물을 찾을 수 없어요.</p></div>`;
+  return `
+  <header class="topbar"><button class="icon-btn" data-act="back" aria-label="뒤로">${icon('back')}</button><h1>${esc(ch.name)}의 몸</h1></header>
+  <section class="card">
+    <p class="sub">키와 체형은 사진·영상과 몸 기준 사진(상반신·전신)을 만들 때 써요.</p>
+    ${bodyEditor('bodyForm', f)}
+  </section>
+  ${bottomBar(`<button class="btn btn-primary" data-act="saveBody">${icon('check')} 저장</button>`, '설정을 바꾸면 몸 기준 사진을 새로 만들지 물어봐요')}`;
+}
+const backOr = (view, params = {}) => { if (((history.state && history.state.d) || 0) > 0) history.back(); else go(view, params, { replace: true }); };
+const REF_ACT = {
+  openRefs: () => go('refs'),
+  makeRefSet: () => { const ch = curChar(); if (!ch) return; if (!refCanGen()) return refNeedKey(); makeRefSet(ch.id); },
+  refPick: el => { const ch = curChar(); if (ch) startRefPick(ch.id, el.dataset.shot); },
+  openRefPick: () => { if (S.refPick) go('refpick'); },
+  selRefCand: el => { const rp = S.refPick; if (!rp) return; const i = Number(el.dataset.i); rp.sel = rp.sel === i ? -1 : i; render(); },
+  remakeRefPick: () => { const rp = S.refPick; if (rp && !rp.busy) startRefPick(rp.charId, rp.shotId, true); },
+  retryRefCand: el => {
+    const rp = S.refPick; if (!rp) return;
+    const ch = S.chars.find(c => c.id === rp.charId), shot = REF_SHOTS.find(x => x.id === rp.shotId), i = Number(el.dataset.i);
+    if (!rp.refs) return startRefPick(rp.charId, rp.shotId, true);
+    if (ch && shot && rp.cands[i]) runRefCand(rp, rp.cands[i], ch, shot, i);
+  },
+  applyRefPick: () => applyRefPick(),
+  dropRef: async el => {
+    const ch = curChar(), id = el.dataset.id; if (!ch || id === ch.refIds[0]) return;
+    await withRefLock(ch.id, async () => { ch.refIds = ch.refIds.filter(x => x !== id); ch.updatedAt = Date.now(); await DB.put('chars', ch); });
+    render(); toast('기준 사진에서 뺐어요');
+  },
+  openBody: () => {
+    const ch = curChar(); if (!ch) return;
+    S.bodyForm = { charId: ch.id, gender: ch.gender, height: ch.height || '', body: ch.body || 'auto', bodyNote: ch.bodyNote || '' };
+    go('body');
+  },
+  saveBody: async () => {
+    const f = S.bodyForm, ch = f && S.chars.find(c => c.id === f.charId); if (!ch) return;
+    const raw = String(f.height == null ? '' : f.height).trim(), h = Math.round(Number(raw));
+    if (raw && !(h >= 140 && h <= 200)) return toast('키는 140~200cm 사이로 적어 주세요');
+    const next = { height: raw ? h : '', body: f.body || 'auto', bodyNote: String(f.bodyNote || '').trim().slice(0, 80) };
+    const changed = ['height', 'body', 'bodyNote'].some(k => String(ch[k] || '') !== String(next[k] || ''));
+    Object.assign(ch, next, { updatedAt: Date.now() });
+    await DB.put('chars', ch);
+    const bodyShots = refSlots(ch, await charMetas(ch.id)).slots.filter(x => x.shot.body && x.id).map(x => x.shot);
+    let remake = false;
+    if (changed && bodyShots.length && refCanGen() && !S.refJob)
+      remake = await confirmSheet('몸 기준 사진도 새로 만들까요?', `바뀐 설정으로 ${bodyShots.map(x => x.ko).join('·')} 기준 사진 ${bodyShots.length}장을 다시 만들어요 (${refCostNote(bodyShots.length)}). 예전 사진은 갤러리에 남아요.`, '새로 만들기');
+    backOr('char');
+    toast(remake ? '몸 설정을 저장했어요. 몸 기준 사진을 새로 만들고 있어요' : '몸 설정을 저장했어요', 3000);
+    if (remake) makeRefSet(ch.id, { shots: bodyShots, replace: true });
+  },
+  // 갤러리 사진을 기준으로 지정(칸 고르기) / 기준에서 빼기 — 대표 얼굴은 고정
+  vRef: async () => {
+    const m = Viewer.meta, ch = curChar(); if (!m || !ch) return;
+    if (m.id === ch.refIds[0]) return toast('처음 고른 대표 얼굴은 바꾸거나 뺄 수 없어요', 3200);
+    if (ch.refIds.includes(m.id)) {
+      const sh = REF_SHOTS.find(x => x.id === shotOf(m));
+      await withRefLock(ch.id, async () => {
+        ch.refIds = ch.refIds.filter(x => x !== m.id); ch.updatedAt = Date.now();
+        await DB.put('chars', ch);
+        if (sh) await unmarkRef(m, sh);
+      });
+      toast(sh ? `${sh.ko} 칸이 비었어요. 기준 사진 화면에서 새로 만들 수 있어요` : '기준 사진에서 뺐어요', 3000);
+    } else {
+      const { slots } = refSlots(ch);
+      const a = await menuSheet('어느 칸의 기준 사진으로 쓸까요?', slots.map(x => ({ act: x.shot.id, label: `${x.shot.ko}${x.m ? ' · 지금 사진과 바꾸기' : ' · 빈 칸'}`, icon: 'star' })));
+      if (!a) return;
+      if (!(await setSlotRef(ch.id, a, m.id))) return toast(`기준 사진은 ${MAX_REFS}장까지예요. 하나를 먼저 빼 주세요`);
+      toast(`★ ${(REF_SHOTS.find(x => x.id === a) || {}).ko} 기준 사진으로 지정했어요`, 2600);
+    }
+    Viewer.render(); render();
+  },
+};
+
 function render() {
   const app = $('#app');
   const ae = document.activeElement;
@@ -2123,6 +2560,9 @@ function render() {
   else if (S.view === 'char') html = vChar();
   else if (S.view === 'settings') html = vSettings();
   else if (S.view === 'costs') html = vCosts();
+  else if (S.view === 'refs') html = vRefs();
+  else if (S.view === 'refpick') html = vRefPick();
+  else if (S.view === 'body') html = vBody();
   else html = vHome();
   app.innerHTML = `<div class="wrap">${html}</div>`;
   if (focusPath) {
@@ -2160,6 +2600,12 @@ async function enterView(scrollTop) {
   try {
     if (S.view === 'home') await loadChars();
     else if (S.view === 'char') { if (!S.chars.length) await loadChars(); await loadCharMedia(); }
+    else if (S.view === 'refs' || S.view === 'refpick' || S.view === 'body') {
+      if (!S.chars.length) await loadChars();
+      await loadCharMedia();
+      const ch = S.chars.find(c => c.id === S.charId);
+      if (S.view === 'body' && ch && (!S.bodyForm || S.bodyForm.charId !== ch.id)) S.bodyForm = { charId: ch.id, gender: ch.gender, height: ch.height || '', body: ch.body || 'auto', bodyNote: ch.bodyNote || '' };
+    }
     else if (S.view === 'costs') { if (!S.chars.length) await loadChars(); refreshFx(false).then(ok => { if (ok && S.view === 'costs') renderSoon(); }); }
   } catch (e) { console.error(e); }
   render();
@@ -2174,40 +2620,9 @@ window.addEventListener('popstate', e => {
 });
 
 /* ================= 동작 ================= */
-// 고른 얼굴을 보고 각도·전신 기준 사진을 만들어 기준 사진에 추가
-async function makeRefSet(charId) {
-  if (S.refJob) return;
-  const ch0 = S.chars.find(c => c.id === charId); if (!ch0) return;
-  const shots = missingRefShots(ch0);
-  if (!shots.length) return;
-  S.refJob = { charId, total: shots.length, done: 0, startedAt: Date.now() };
-  renderSoon(); updateWakeLock();
-  await ensureFace(charId);
-  const ch = S.chars.find(c => c.id === charId) || ch0;
-  let refs;
-  try { refs = await loadRefs(ch); } catch (e) { S.refJob = null; updateWakeLock(); render(); return showError(e); }
-  const size = LS.get('imgSize', '1K');
-  const op = newOp(`기준 사진 ${shots.length}장 (각도·전신)`, charId);
-  const results = await Promise.allSettled(shots.map(async shot => {
-    const prompt = refSetPrompt(ch, shot);
-    const blob = await generateImage({ refs, prompt, ratio: shot.ratio, size, op });
-    const thumb = await makeThumb(blob);
-    const m = await saveMediaRec({ charId, kind: 'image', blob, thumb, label: refLabel(shot), prompt, ratio: shot.ratio, extra: blob.usd != null ? { usd: blob.usd, est: !!blob.est } : null });
-    if (S.recent[charId]) S.recent[charId] = S.recent[charId].filter(x => x !== m.id); // '방금 완성된 사진'에는 안 보이게 (기준 사진 줄에 보임)
-    const cur = S.chars.find(c => c.id === charId) || ch;
-    if (cur.refIds.length < MAX_REFS) { cur.refIds = [...cur.refIds, m.id]; cur.updatedAt = Date.now(); await DB.put('chars', cur); }
-    if (S.charId === charId) S.media.unshift(m);
-    if (S.refJob) S.refJob.done++;
-    renderSoon();
-  }));
-  S.refJob = null; updateWakeLock(); render();
-  const fails = results.filter(r => r.status === 'rejected');
-  if (fails.length === shots.length) showError(fails[0].reason, '기준 사진 만들기 실패');
-  else if (fails.length) toast(`기준 사진 ${shots.length - fails.length}장 완성, ${fails.length}장 실패 · ${costLine(Costs.opSum(op.id))}`, 3500);
-  else toast(`각도·전신 기준 사진이 준비됐어요 ★ · ${costLine(Costs.opSum(op.id))}`, 3500);
-}
-
 const ACT = {
+  ...REF_ACT,
+  ...SHEET_ACT,
   go: el => go(el.dataset.view),
   back: () => { if (((history.state && history.state.d) || 0) > 0) history.back(); else go('home', {}, { replace: true }); },
   set: el => { let v = el.dataset.val; if (el.hasAttribute('data-num')) v = Number(v); setPath(S, el.dataset.path, v); saveVideoPrefs(el.dataset.path); render(); },
@@ -2277,14 +2692,15 @@ const ACT = {
       const charId = uid();
       const thumb = await makeThumb(cd.blob);
       const m = await saveMediaRec({ charId, kind: 'image', blob: cd.blob, thumb, label: '기준 얼굴', prompt: cd.prompt || '', ratio: '3:4', extra: cd.blob.usd != null ? { usd: cd.blob.usd, est: !!cd.blob.est } : null });
-      const ch = { id: charId, name, gender: p.gender, age: p.age, keywords: p.keywords, summary: p.summary, persona: p.persona, appearance: p.appearance, style: p.style, vibe: p.vibe, points: p.points || [], features: p.features || [], refIds: [m.id], coverId: m.id, coverThumb: thumb, createdAt: Date.now(), updatedAt: Date.now() };
+      const ch = { id: charId, name, gender: p.gender, age: p.age, keywords: p.keywords, summary: p.summary, persona: p.persona, appearance: p.appearance, style: p.style, vibe: p.vibe, points: p.points || [], features: p.features || [],
+        height: p.height || '', body: p.body || 'auto', bodyNote: String(p.bodyNote || '').trim(), refIds: [m.id], coverId: m.id, coverThumb: thumb, createdAt: Date.now(), updatedAt: Date.now() };
       await DB.put('chars', ch);
       try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch {}
       resetCreate();
       S.recent[charId] = [];
       await loadChars();
       go('char', { charId, tab: 'photo', galFilter: 'all' }, { replace: true });
-      toast(`${jo(name, '이', '가')} 태어났어요! 각도·전신 기준 사진을 만들고 있어요 ✨`, 3500);
+      toast(`${jo(name, '이', '가')} 태어났어요! 얼굴·몸 기준 사진 ${REF_SHOTS.length}장을 만들고 있어요 ✨`, 3500);
       makeRefSet(charId);
     } catch (e) { el.disabled = false; showError(e, '저장 실패'); }
   },
@@ -2295,12 +2711,16 @@ const ACT = {
     const a = await menuSheet(ch.name, [
       { act: 'rename', label: '이름 바꾸기', icon: 'edit' },
       { act: 'info', label: '인물 설정 보기·수정', icon: 'user' },
+      { act: 'body', label: '몸 (키·체형) 설정', icon: 'user' },
+      { act: 'refs', label: '기준 사진 관리·바꾸기', icon: 'star' },
       { act: 'backup', label: '이 인물 백업하기', icon: 'download' },
       { act: 'delete', label: '인물 삭제', icon: 'trash', danger: true },
     ]);
     if (a === 'rename') {
       const v = await formSheet('이름 바꾸기', [{ key: 'name', label: '이름', value: ch.name, max: 12 }]);
       if (v && typeof v === 'object' && v.name.trim()) { ch.name = v.name.trim(); ch.updatedAt = Date.now(); await DB.put('chars', ch); render(); toast('이름을 바꿨어요'); }
+    } else if (a === 'body') { ACT.openBody();
+    } else if (a === 'refs') { go('refs');
     } else if (a === 'info') {
       const intro = `${ch.summary ? `<p>${esc(ch.summary)}</p>` : ''}${(ch.keywords || []).length ? `<div class="chips" style="margin-bottom:6px">${ch.keywords.map(k => `<span class="chip static">#${esc(k)}</span>`).join('')}</div>` : ''}`;
       const v = await formSheet(`${ch.name} 설정`, [
@@ -2326,8 +2746,7 @@ const ACT = {
       go('home', { charId: null }, { replace: true });
     }
   },
-  refHelp: () => Sheet.show(`<h3>★ 기준 사진이란?</h3><p>사진·영상을 만들 때 이 사진들을 보고 얼굴을 똑같이 맞춰요. 각도가 다양할수록 얼굴이 더 일정하게 나와요.\n‘각도·전신 기준 사진 만들기’를 누르면 3/4 각도·전신·옆모습을 자동으로 만들어 추가해요. 갤러리에서 마음에 드는 사진을 열고 ‘기준 지정’을 눌러도 최대 ${MAX_REFS}장까지 추가돼요.</p><button class="btn btn-primary full" data-sheet-val="">알겠어요</button>`),
-  makeRefSet: () => { const ch = curChar(); if (!ch) return; if (!getKey()) return needKey(); makeRefSet(ch.id); },
+  refHelp: () => go('refs'),
   genPhotos: async () => {
     const ch = curChar(); if (!ch || S.busy) return;
     if (!getKey()) return needKey();
@@ -2342,7 +2761,7 @@ const ACT = {
     render(); window.scrollTo({ top: 0, behavior: 'smooth' }); updateWakeLock();
     await ensureFace(ch.id);
     let refs;
-    try { refs = await loadRefs(ch); } catch (e) { S.busy = null; render(); updateWakeLock(); return showError(e); }
+    try { refs = await loadRefs(ch, orderedRefIds(ch, { body: f.shot !== 'close' })); } catch (e) { S.busy = null; render(); updateWakeLock(); return showError(e); }
     const prompt = scenePrompt(ch, { scene, shot, outfit: f.outfit.trim(), ratio });
     const op = newOp(`사진 ${n}장 · ${label}`, ch.id);
     const results = await Promise.allSettled(Array.from({ length: n }, async () => {
@@ -2388,7 +2807,7 @@ const ACT = {
     const refThumb = scene ? (S.media.find(m => m.id === ch.refIds[0]) || {}).thumb : null;
     // 대사가 있으면: 거절될 때 쓸 2단계(첫 장면 → 이어서 대사)와 '대사 빼고 다시'용 문장도 같이 준비
     const lineSet = line ? { hasLine: true, silentPrompt: videoPrompt(ch, { ...f, line: '' }), openPrompt: openingPrompt(ch, f), speakPrompt: speakPrompt(ch, f) } : { hasLine: false };
-    startVideo({ charId: ch.id, mode: scene ? 'scene' : 'photo', sourceId: scene ? ch.refIds[0] : src.id, refIds: scene ? ch.refIds.slice(0, MAX_REFS) : null,
+    startVideo({ charId: ch.id, mode: scene ? 'scene' : 'photo', sourceId: scene ? ch.refIds[0] : src.id, refIds: scene ? videoRefIds(ch) : null,
       prompt, label, ratio: f.ratio, res: f.res, secs: f.secs, thumb: scene ? (refThumb || null) : src.thumb, ...lineSet });
     toast('영상 요청을 보냈어요. 보통 1~3분 걸려요 🎬', 3200);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2408,7 +2827,7 @@ const ACT = {
     toast('대사 없이 다시 만들고 있어요 🎬', 2600);
   },
   dismissJob: async el => { await removeJob(el.dataset.id); render(); },
-  jobDetail: el => { const j = S.jobs.find(x => x.id === el.dataset.id); if (j) Sheet.show(`<h3>오류 자세히</h3><p class="hint" style="margin-top:0">이 화면을 캡처해서 보내 주시면 원인을 찾는 데 도움이 돼요.</p><pre class="raw">${esc(j.errorRaw || '')}</pre><button class="btn btn-primary full" style="margin-top:14px" data-sheet-val="">확인</button>`); },
+  jobDetail: el => { const j = S.jobs.find(x => x.id === el.dataset.id); if (j) Sheet.show(`<h3>영상 오류 자세히</h3><p class="err-msg">${esc(j.error || '')}</p><pre class="raw">${esc(j.errorRaw || '')}</pre><p class="hint" style="margin-top:10px">‘복사’를 눌러 붙여 넣어 보내 주시면 원인을 찾는 데 도움이 돼요.</p><div class="row" style="margin-top:12px">${copyErrBtn()}<button class="btn btn-primary" data-sheet-val="">확인</button></div>`); },
 
   /* 뷰어 */
   openMedia: el => {
@@ -2440,21 +2859,6 @@ const ACT = {
     ACT.vClose(); render(); window.scrollTo(0, 0);
     toast('이 사진으로 영상을 만들어요 🎬');
   },
-  vRef: async () => {
-    const m = Viewer.meta, ch = curChar(); if (!m || !ch) return;
-    if (ch.refIds.includes(m.id)) {
-      if (ch.refIds.length <= 1) return toast('기준 사진은 최소 1장 있어야 해요');
-      ch.refIds = ch.refIds.filter(x => x !== m.id);
-      toast('기준 사진에서 뺐어요');
-    } else {
-      if (ch.refIds.length >= MAX_REFS) return toast(`기준 사진은 ${MAX_REFS}장까지예요. 하나를 먼저 빼 주세요`);
-      ch.refIds = [...ch.refIds, m.id];
-      toast('기준 사진으로 지정! 다음 생성부터 얼굴 맞추는 데 써요', 3000);
-    }
-    ch.updatedAt = Date.now();
-    await DB.put('chars', ch);
-    Viewer.render(); render();
-  },
   vMore: async () => {
     const m = Viewer.meta, ch = curChar(); if (!m || !ch) return;
     const a = await menuSheet(null, [
@@ -2465,7 +2869,7 @@ const ACT = {
       ch.coverId = m.id; ch.coverThumb = m.thumb; ch.updatedAt = Date.now();
       await DB.put('chars', ch); render(); toast('대표 사진으로 바꿨어요');
     } else if (a === 'delete') {
-      if (ch.refIds.includes(m.id) && ch.refIds.length <= 1) return toast('마지막 기준 사진은 지울 수 없어요. 다른 사진을 기준으로 지정한 뒤 지워 주세요', 3800);
+      if (m.id === ch.refIds[0]) return toast('처음 고른 대표 얼굴은 지울 수 없어요', 3200);
       if (!(await confirmSheet('삭제할까요?', '이 기기에서 완전히 지워져요.', '삭제', true))) return;
       ch.refIds = ch.refIds.filter(x => x !== m.id);
       if (ch.coverId === m.id) { const nc = S.media.find(x => x.id === ch.refIds[0]); ch.coverId = nc ? nc.id : null; ch.coverThumb = nc ? nc.thumb : ch.coverThumb; }
