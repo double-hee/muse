@@ -170,6 +170,8 @@ details[open]>summary::before{transform:rotate(90deg)}
 .cand.sel{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,79,216,.22),0 0 30px rgba(255,79,216,.35)}
 .cand .ck{position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;background:var(--grad);display:grid;place-items:center}
 .cand .ck svg{width:17px;height:17px;color:#fff}
+.cand .match{position:absolute;left:8px;bottom:8px;padding:3px 9px;border-radius:99px;background:rgba(7,7,12,.72);color:#fff;font-size:12px;font-weight:800;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.cand .match.top{background:var(--grad)}
 .cand .state{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:12px;color:var(--sub);text-align:center;padding:12px}
 .cand.err{border-color:rgba(255,92,124,.35)}
 .mini{font-size:12px;font-weight:700;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid var(--line2);color:var(--text)}
@@ -211,6 +213,10 @@ details[open]>summary::before{transform:rotate(90deg)}
 .refs-row button{width:56px;height:56px;border-radius:14px;overflow:hidden;border:1px solid var(--line2)}
 .refs-row img{width:100%;height:100%;object-fit:cover}
 .ref-add{display:grid;place-items:center;border:1.5px dashed rgba(255,255,255,.2)!important;color:var(--dim)}
+.ref-wait{width:56px;height:56px;border-radius:14px;border:1.5px dashed rgba(255,79,216,.45);display:grid;place-items:center;background:rgba(255,79,216,.06)}
+.ref-make{margin-top:10px;width:100%;min-height:42px;padding:8px 12px;border-radius:12px;border:1px solid var(--line2);background:rgba(255,255,255,.04);color:var(--text);font-size:14px;font-weight:700;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px}
+.ref-make svg{width:16px;height:16px;color:var(--pink)}
+.ref-make small{color:var(--dim);font-weight:600;font-size:12px}
 .tabs{position:sticky;top:calc(61px + var(--st));z-index:20;display:flex;gap:6px;margin:14px -16px 0;padding:8px 16px;background:rgba(7,7,12,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
 .tabs button{flex:1;height:42px;display:flex;align-items:center;justify-content:center;gap:6px;border-radius:12px;font-weight:700;font-size:14px;color:var(--sub);background:rgba(255,255,255,.03);border:1px solid var(--line)}
 .tabs button svg{width:17px;height:17px}
@@ -237,7 +243,7 @@ details[open]>summary::before{transform:rotate(90deg)}
 .job .mini-hint{font-size:11.5px;color:var(--dim)}
 .job.fail{border-color:rgba(255,92,124,.35)}
 .job.fail .jt p{color:#ff8aa3}
-.job .acts{display:flex;gap:6px;margin-top:8px}
+.job .acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .filter-row{display:flex;gap:6px;margin-top:14px;overflow-x:auto;scrollbar-width:none}
 .gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
 .gal-item{position:relative;display:block;width:100%;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:var(--card2)}
@@ -262,6 +268,44 @@ details[open]>summary::before{transform:rotate(90deg)}
 .cost-list{list-style:none;padding:0;margin:8px 0 0}
 .cost-list li{display:flex;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
 .cost-list li span{color:var(--sub)}
+.cost-chip{display:flex;align-items:center;gap:8px;width:100%;margin:10px 0 0;padding:11px 14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--text);font-size:14px;text-align:left}
+.cost-chip span{color:var(--sub);flex:1}
+.cost-chip b{font-size:15px;margin-right:4px}
+.cost-chip small{color:var(--dim);font-size:12px}
+.cost-chip svg{width:16px;height:16px;color:var(--dim);flex:none}
+.ch-label{display:block;color:var(--sub);font-size:13px;font-weight:600}
+.ch-value{display:block;font-size:48px;font-weight:800;line-height:1.1;margin:6px 0 2px;letter-spacing:-.02em}
+.ch-sub{display:block;color:var(--sub);font-size:14px}
+.ch-kinds{margin:10px 0 0;color:var(--dim);font-size:12.5px}
+.tile-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile-row.three{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tile-row.three .tile{padding:12px 11px}
+.tile-row.three .tile b{font-size:19px}
+.tile em{display:block;font-style:normal;color:var(--dim);font-size:11px;margin-top:2px}
+.tile{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.tile span{display:block;color:var(--sub);font-size:12.5px;font-weight:600}
+.tile b{display:block;font-size:22px;font-weight:800;margin-top:4px}
+.tile small{color:var(--dim);font-size:12px}
+.bar-list{margin-top:4px}
+.bar-row{display:grid;grid-template-columns:70px 1fr auto;align-items:center;gap:10px;width:100%;padding:10px 2px;border-bottom:1px solid var(--line);color:var(--text);text-align:left;background:none}
+.br-name{font-size:14px;font-weight:700;display:flex;flex-direction:column;line-height:1.2}
+.br-name small{font-size:11px;color:var(--dim);font-weight:600}
+.br-track{display:block;height:10px}
+.br-track i{display:block;height:10px;background:var(--violet);border-radius:0 4px 4px 0}
+.bar-row:hover .br-track i,.bar-row:focus-visible .br-track i,.bar-row.open .br-track i{filter:brightness(1.22)}
+.br-val{font-size:14px;font-variant-numeric:tabular-nums}
+.br-detail{padding:8px 4px 12px 82px;color:var(--sub);font-size:13px;line-height:1.7;border-bottom:1px solid var(--line)}
+.br-detail span{color:var(--dim)}
+.op-list{list-style:none;margin:6px 0 0;padding:0}
+.op-list li{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.op-list li:last-child{border-bottom:0}
+.op-e{font-size:18px;flex:none;width:24px;text-align:center}
+.op-t{flex:1;min-width:0;display:flex;flex-direction:column}
+.op-t b{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.op-t small{color:var(--dim);font-size:12px}
+.op-v{text-align:right;display:flex;flex-direction:column;flex:none}
+.op-v b{font-size:14px;font-variant-numeric:tabular-nums}
+.op-v small{color:var(--dim);font-size:11.5px}
 .usage{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;font-size:13px;color:var(--sub)}
 .usage .text-btn{margin:0;flex:none}
 .test-list{margin-top:12px;font-size:13px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.25);border:1px solid var(--line)}
@@ -330,13 +374,15 @@ details[open]>summary::before{transform:rotate(90deg)}
 
 /* ================= 설정 ================= */
 const API = 'https://generativelanguage.googleapis.com/v1beta';
-const MODEL_DEFAULTS = { analysis: 'gemini-flash-latest', image: 'gemini-nano-banana-2.1', video: 'gemini-omni-1.1-flash' };
+const MODEL_DEFAULTS = { analysis: 'gemini-flash-latest', image: 'gemini-nano-banana-2.1', video: 'gemini-omni-1.2-flash' };
 const MODEL_FALLBACKS = {
   analysis: ['gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'],
   image: ['gemini-3.1-flash-image', 'gemini-3.1-flash-lite-image'],
-  video: ['gemini-omni-flash-preview'],
+  video: ['gemini-omni-1.1-flash'],
 };
-const COST = { img: { '1K': 0.034, '2K': 0.05 }, vidSec: { '720p': 0.10, '1080p': 0.15 }, vidLen: 8 }; // USD, 추정
+// 예전 기본값·종료된 모델: 저장돼 있어도 새 기본값을 쓰게 함
+const OLD_MODELS = ['gemini-omni-flash-preview', 'gemini-omni-1.1-flash'];
+const COST = { img: { '1K': 0.034, '2K': 0.05 }, vidSec: { '720p': 0.07, '1080p': 0.104 }, vidLen: 8 }; // USD, 추정 (Omni 1.2 기준)
 const MAX_REFS = 4;
 
 const SCENES = [
@@ -378,6 +424,18 @@ const TWEAKS = ['더 귀엽게', '더 시크하게', '더 성숙하게', '더 �
 const GENDERS = [['auto', '자동'], ['female', '여성'], ['male', '남성']];
 const AGES = [['auto', '자동'], ['22', '20대 초반'], ['26', '20대 중반'], ['29', '20대 후반'], ['33', '30대 초반'], ['37', '30대 후반']];
 const ANGLES = ['looking straight at the camera', 'with a slight three-quarter turn, eyes to the camera', 'with the head tilted slightly, eyes to the camera', 'with a gentle three-quarter angle and a soft smile'];
+// ----- 기준 사진 세트: 고른 얼굴로 각도·전신 사진을 더 만들어 얼굴을 일정하게 (중요한 순서) -----
+const REF_SHOTS = [
+  { id: 'side34', ko: '3/4 각도', en: 'head-and-shoulders portrait in a three-quarter view, the head turned about 45 degrees to the side, eyes toward the camera', ratio: '3:4' },
+  { id: 'full', ko: '전신', en: 'full-body shot, standing naturally and facing the camera, the whole body visible from head to toe including the shoes', ratio: '9:16' },
+  { id: 'profile', ko: '옆모습', en: 'head-and-shoulders portrait in a clean side profile, facing to the side', ratio: '3:4' },
+];
+const refLabel = shot => `★ 기준 · ${shot.ko}`;
+// 아직 없는 각도·전신 사진 (기준 사진 칸이 남은 만큼만)
+function missingRefShots(ch) {
+  const have = new Set((ch.refIds || []).map(id => (S.media.find(m => m.id === id) || {}).label));
+  return REF_SHOTS.filter(sh => !have.has(refLabel(sh))).slice(0, Math.max(0, MAX_REFS - (ch.refIds || []).length));
+}
 // ----- 영상 연출 (상세 설정) -----
 const CAMERAS = [
   { id: 'auto', ko: '자동', en: '' },
@@ -580,6 +638,170 @@ async function resizeBlob(blob, max, q = 0.86) {
 }
 async function makeThumb(blob) { const { blob: t } = await resizeBlob(blob, 480, 0.8); return blobToDataURL(t); }
 
+// 영상 썸네일 = 영상 속 대표 장면 (가운데쯤 세 장면 중 가장 또렷하고 너무 어둡지 않은 장면)
+const waitEv = (el, ev, ms) => new Promise((res, rej) => {
+  const done = ok => { clearTimeout(t); el.removeEventListener(ev, onEv); el.removeEventListener('error', onErr); ok ? res() : rej(new Error(ev + ' 실패')); };
+  const onEv = () => done(true), onErr = () => done(false);
+  const t = setTimeout(() => done(false), ms);
+  el.addEventListener(ev, onEv); el.addEventListener('error', onErr);
+});
+function frameScore(g, w, h) {
+  const d = g.getImageData(0, 0, w, h).data;
+  const step = Math.max(1, Math.floor(Math.min(w, h) / 64));
+  let n = 0, s = 0, s2 = 0;
+  for (let y = 0; y < h; y += step) for (let x = 0; x < w; x += step) {
+    const i = (y * w + x) * 4, l = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+    s += l; s2 += l * l; n++;
+  }
+  if (!n) return 0;
+  const mean = s / n, sd = Math.sqrt(Math.max(0, s2 / n - mean * mean));
+  return sd * (mean < 28 ? 0.15 : mean > 235 ? 0.4 : 1);
+}
+async function videoThumb(blob, max = 480) {
+  if (!blob) return null;
+  const url = URL.createObjectURL(blob);
+  const v = document.createElement('video');
+  v.muted = true; v.defaultMuted = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'auto';
+  try {
+    const ready = waitEv(v, 'loadeddata', 10000);
+    v.src = url;
+    await ready;
+    let dur = v.duration;
+    if (!isFinite(dur) || dur <= 0) { // 폰에서 녹화한 webm은 길이 정보가 비어 있을 때가 있어요
+      try { const p = waitEv(v, 'seeked', 3000); v.currentTime = 1e6; await p; dur = v.duration; } catch {}
+    }
+    const w = v.videoWidth, h = v.videoHeight;
+    if (!w || !h) return null;
+    const k = Math.min(1, max / Math.max(w, h));
+    const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w * k)); c.height = Math.max(1, Math.round(h * k));
+    const g = c.getContext('2d', { willReadFrequently: true });
+    let best = null;
+    const grab = () => { g.drawImage(v, 0, 0, c.width, c.height); const sc = frameScore(g, c.width, c.height); if (!best || sc > best.sc) best = { sc, url: c.toDataURL('image/jpeg', 0.8) }; };
+    for (const t of (isFinite(dur) && dur > 0.4 ? [0.3, 0.5, 0.7].map(f => dur * f) : [0.1, 0.6, 1.2])) {
+      try { if (Math.abs(v.currentTime - t) > 0.02) { const p = waitEv(v, 'seeked', 4000); v.currentTime = t; await p; } grab(); } catch {}
+    }
+    if (!best || best.sc < 2) { try { await v.play(); await sleep(300); v.pause(); grab(); } catch {} } // 일부 아이폰은 한 번 재생해야 화면이 그려져요
+    return best && best.sc >= 2 ? best.url : null;
+  } catch { return null; }
+  finally { try { v.removeAttribute('src'); v.load(); } catch {} URL.revokeObjectURL(url); }
+}
+// 예전에 저장된 영상도 영상 속 장면으로 썸네일을 바꿔요 (영상마다 한 번, 백그라운드)
+async function fixVideoThumbs() {
+  let metas;
+  try { metas = (await DB.all('media')).filter(m => m.kind === 'video' && !m.vt); } catch { return; }
+  for (const m of metas) {
+    try {
+      const r = await DB.get('blobs', m.id);
+      const t = r ? await videoThumb(new Blob([r.buf], { type: r.mime || m.mime })) : null;
+      m.vt = t ? 1 : -1;
+      if (t) m.thumb = t;
+      await DB.put('media', m);
+      const live = S.media.find(x => x.id === m.id);
+      if (live) { live.thumb = m.thumb; live.vt = m.vt; }
+      if (t) renderSoon();
+    } catch {}
+    await sleep(100);
+  }
+}
+
+/* ================= 얼굴 일치 ================= */
+const strList = (a, max) => (Array.isArray(a) ? a : []).map(x => String(x || '').trim()).filter(Boolean).slice(0, max);
+// 취향 분석: 고른 사진들의 공통 얼굴 특징을 자세히 뽑고, 그 특징을 많이 닮은 '새' 인물을 설계 (특정인과 똑같은 얼굴은 만들지 않음)
+function analysisPrompt(prefs, n) {
+  const c = [];
+  if (prefs.gender !== 'auto') c.push(`The new person MUST be ${prefs.gender}.`);
+  if (prefs.age !== 'auto') c.push(`The new person should be about ${prefs.age} years old.`);
+  if (prefs.extra && prefs.extra.trim()) c.push(`Also reflect these wishes from the user (Korean): "${prefs.extra.trim()}".`);
+  return `You are a visual-taste analyst for a character-creation app.
+The user picked ${n} photos of celebrities they find attractive. The goal is a new person whose face strongly reflects the facial features the user likes.
+Rules:
+- Do NOT identify, name, or guess who anyone is. Never output real people's names.
+- Infer the user's taste only from visual traits the photos share. When the photos differ, follow the traits that appear most often.
+Task:
+1) Study the faces closely and find what they share, as specifically as possible: overall look and ethnicity, face shape and jawline, cheekbones, eyes (shape, size, tilt, eyelid type, spacing), eyebrows (shape, thickness), nose (bridge, tip, width), lips (shape, fullness), skin tone and texture, hair (length, texture, style, color, bangs), makeup or grooming, typical expression, aura, fashion style, body type impression.
+2) Design ONE brand-new fictional adult (age 20 to 35) who closely matches those shared features: use the same feature types and proportions so the user immediately recognizes their taste. The person must still be a new individual, not a lookalike of any single photo or any real person.
+${c.join('\n')}
+Return ONLY a JSON object with exactly these keys:
+{"name_ko": "a fictional Korean given name (2 syllables) that is not a famous person's name",
+"gender": "female" or "male",
+"age": integer from 20 to 35,
+"keywords_ko": ["5-8 short Korean keywords describing the shared taste, e.g. 청순, 큰 눈, 긴 생머리"],
+"taste_summary_ko": "2-3 friendly Korean sentences describing the common taste you found",
+"persona_ko": "1-2 Korean sentences giving the new person a warm fictional persona (job, hobby, vibe)",
+"match_points_ko": ["4-6 short Korean phrases naming the most important shared facial features to keep, e.g. 살짝 올라간 눈꼬리, 갸름한 V라인 턱, 도톰한 입술"],
+"key_features_en": ["the same 4-6 features in English, one per Korean phrase, very specific, for an image generator"],
+"appearance_en": "100-160 words. Precise physical description of the NEW person for an image generator, feature by feature: overall look and ethnicity, face shape and jawline, cheekbones, eyes, eyelids, brows, nose, lips, skin, hair, makeup or grooming, height and build. No names, no celebrity references.",
+"style_en": "20-40 words: signature fashion style and color palette",
+"vibe_en": "10-20 words: aura and typical expression"}`;
+}
+// 고른 얼굴(기준 얼굴)을 정밀하게 글로 묘사 → 사진·영상을 만들 때 기준 사진과 함께 넣어 얼굴을 일정하게
+function facePrompt() {
+  return `This photo shows a fictional person created for a character app (not a real person). Do not identify or name anyone.
+Describe this person's face precisely so an image or video generator can keep exactly the same identity in new shots.
+Cover, feature by feature: face shape and jawline, cheekbones, eyes (shape, size, tilt, eyelid type, iris color), eyebrows (shape, thickness), nose (bridge, tip, width), lips (shape, fullness), skin tone and any visible marks (moles, freckles, dimples), hairline and hair (color, length, texture, style, bangs), apparent age.
+Return ONLY a JSON object: {"face_en": "70-110 words, specific and visual, no names"}`;
+}
+// 후보 얼굴이 고른 사진들의 공통 특징을 얼마나 살렸는지 (같은 사람인지가 아니라 특징 비교)
+function scorePrompt(p, nPhotos, nCands) {
+  const liked = (p.features || []).length ? p.features.join('; ') : (p.appearance || '');
+  return `You compare facial features for a character-creation app. Do NOT identify, name, or guess who anyone is.
+Images 1 to ${nPhotos} are photos the user likes. Images ${nPhotos + 1} to ${nPhotos + nCands} are new fictional candidates; call them candidate 1 to ${nCands} in that order.
+Shared features the user likes: ${liked}
+For each candidate, score from 0 to 100 how strongly its face reflects the facial-feature types the user's photos share: face shape and jawline, eyes and eyelids, eyebrows, nose, lips, skin tone, hair, and overall impression. Compare feature types and impression, not identity: a new person can score high.
+Return ONLY a JSON object: {"scores": [{"n": 1, "score": 0, "best_ko": "가장 잘 살린 특징 (짧은 한국어)", "diff_ko": "가장 다른 특징 (짧은 한국어)"}]} with one entry per candidate.`;
+}
+function parseScores(j, n) {
+  const out = Array(n).fill(null);
+  (j && Array.isArray(j.scores) ? j.scores : []).forEach((x, k) => {
+    const i = Number.isFinite(Number(x && x.n)) ? Number(x.n) - 1 : k;
+    const sc = Math.round(Number(x && x.score));
+    if (i >= 0 && i < n && Number.isFinite(sc)) out[i] = { score: Math.max(0, Math.min(100, sc)), best: String(x.best_ko || '').slice(0, 40), diff: String(x.diff_ko || '').slice(0, 40) };
+  });
+  return out;
+}
+// 얼굴 후보를 만들 때 꼭 살릴 특징 줄
+const keyFeatureLines = p => ((p.features || []).length ? `Key facial features to get exactly right (the user's favorite traits):\n- ${p.features.join('\n- ')}\n` : '');
+// 프롬프트에 넣을 얼굴 묘사 (분석한 얼굴 특징이 있으면 그걸, 없으면 처음 설계한 외모)
+const identityText = ch => String((ch && (ch.face || ch.appearance)) || '').trim();
+// 얼굴 특징 문장이 없으면 기준 얼굴을 한 번 분석해서 저장 (실패해도 그냥 진행)
+const faceBusy = new Map();
+async function ensureFace(charId) {
+  const ch = S.chars.find(c => c.id === charId);
+  if (!ch) return null;
+  if (ch.face) return ch.face;
+  if (faceBusy.has(charId)) return faceBusy.get(charId);
+  const job = (async () => {
+    try {
+      const id = ch.coverId || (ch.refIds || [])[0];
+      if (!id) return null;
+      const { blob } = await resizeBlob(await getBlob(id), 768, 0.9);
+      const face = await describeFace(blob, { id: uid(), lb: '얼굴 특징 분석', ch: charId });
+      if (!face) return null;
+      const cur = S.chars.find(c => c.id === charId) || ch;
+      cur.face = face; cur.updatedAt = Date.now();
+      await DB.put('chars', cur);
+      return face;
+    } catch (e) { console.warn('face analysis failed', e); return null; }
+    finally { faceBusy.delete(charId); }
+  })();
+  faceBusy.set(charId, job);
+  return job;
+}
+// 얼굴 후보들의 취향 일치도 (사진 분석으로 만든 인물일 때만)
+async function scoreCandidates() {
+  const c = S.create, p = c.profile;
+  if (!p || !c.photos.length) return;
+  const done = c.cands.filter(x => x.status === 'done' && x.blob);
+  if (!done.length) return;
+  c.scoring = true; renderSoon();
+  try {
+    const res = await scoreFaces(c.photos, done.map(x => x.blob), p);
+    if (S.create !== c) return;
+    done.forEach((cd, i) => { const r = res[i]; if (r) Object.assign(cd, r); });
+  } catch (e) { console.warn('taste score failed', e); }
+  finally { if (S.create === c) { c.scoring = false; renderSoon(); } }
+}
+
 /* ================= 상태 ================= */
 const freshCreate = () => ({ step: 1, photos: [], loadingPhotos: false, prefs: { gender: 'auto', age: 'auto', extra: '' }, busy: null, busyAt: 0, profile: null, cands: [], sel: -1, tweaks: [], tweakText: '' });
 const S = {
@@ -588,14 +810,120 @@ const S = {
   create: freshCreate(),
   photoForm: { preset: 'cafe', custom: '', shot: 'medium', ratio: '9:16', outfit: '', count: 1 },
   videoForm: { src: 'photo', sourceId: null, scene: 'cafe', sceneCustom: '', outfit: '', motion: 'wave', custom: '', line: '', lang: 'ko', tone: 'natural', camera: 'auto', look: 'auto', note: '', ambient: 'auto', ambientCustom: '', music: 'none', musicCustom: '', sfx: '', secs: 8, ratio: '9:16', res: '720p', ...pickPrefs(LS.get('videoPrefs', {})) },
-  busy: null, backup: null,
+  busy: null, refJob: null, backup: null,
 };
 const curChar = () => S.chars.find(c => c.id === S.charId);
 function pickPrefs(o) { const r = {}; for (const k of VIDEO_PREF_KEYS) if (o && o[k] != null) r[k] = o[k]; return r; }
 function saveVideoPrefs(path) { if (String(path || '').startsWith('videoForm.')) LS.set('videoPrefs', pickPrefs(S.videoForm)); }
 const getKey = () => String(LS.get('apiKey', '') || '').trim();
-const getModels = () => ({ ...MODEL_DEFAULTS, ...LS.get('models', {}) });
-function addUsage(kind, cost) { const u = LS.get('usage', { images: 0, videos: 0, analyses: 0, cost: 0 }); u[kind] = (u[kind] || 0) + 1; u.cost = (u.cost || 0) + (cost || 0); LS.set('usage', u); }
+const getModels = () => {
+  const saved = { ...LS.get('models', {}) };
+  for (const k in saved) if (!saved[k] || OLD_MODELS.includes(saved[k]) || saved[k] === MODEL_DEFAULTS[k]) delete saved[k];
+  return { ...MODEL_DEFAULTS, ...saved };
+};
+
+/* ----- 비용 장부: 구글 응답의 사용량으로 계산한 비용을 이 기기에 기록 ----- */
+const KIND_KO = { analysis: '분석', image: '사진', video: '영상', legacy: '이전 기록' };
+const KIND_E = { analysis: '🔎', image: '📸', video: '🎬', legacy: '🧾' };
+const monthKey = t => { const d = new Date(t); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}`; };
+const dayKey = t => { const d = new Date(t); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+// 한 주 = 월요일 ~ 일요일
+const weekStart = t => { const d = new Date(t); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d; };
+const blankCost = () => ({ usd: 0, est: 0, by: {} });
+function addCost(bucket, e) {
+  bucket.usd += e.usd || 0; if (e.est) bucket.est += e.usd || 0;
+  const b = bucket.by[e.k] || (bucket.by[e.k] = { usd: 0, n: 0 });
+  b.usd += e.usd || 0; b.n += e.n == null ? 1 : e.n;
+}
+function mergeCost(into, from) {
+  into.usd += from.usd || 0; into.est += from.est || 0;
+  for (const [k, b] of Object.entries(from.by || {})) { const t = into.by[k] || (into.by[k] = { usd: 0, n: 0 }); t.usd += b.usd || 0; t.n += b.n || 0; }
+  return into;
+}
+const Costs = {
+  log: () => LS.get('costLog', []),
+  agg: () => { const a = LS.get('costAgg', null) || { m: {} }; if (!a.d) a.d = {}; return a; },
+  add(e) {
+    const t = Date.now();
+    const log = this.log(); log.push({ t, ...e }); if (log.length > 800) log.splice(0, log.length - 800);
+    const a = this.agg(), mk = monthKey(t), dk = dayKey(t);
+    addCost(a.m[mk] || (a.m[mk] = blankCost()), e);
+    addCost(a.d[dk] || (a.d[dk] = blankCost()), e);
+    const days = Object.keys(a.d).sort(); // 일별 기록은 최근 120일치만 (주별 계산용)
+    if (days.length > 120) for (const k of days.slice(0, days.length - 120)) delete a.d[k];
+    LS.set('costLog', log); LS.set('costAgg', a);
+  },
+  opSum(op) { let usd = 0, est = false; for (const x of this.log()) if (x.op && x.op === op) { usd += x.usd; est = est || !!x.est; } return { usd, est }; },
+  // 같은 작업(op)끼리 묶은 최근 내역
+  ops(limit = 40) {
+    const map = new Map();
+    for (const x of this.log()) {
+      const key = x.op || 't' + x.t;
+      const g = map.get(key) || { key, lb: x.lb, ch: x.ch, k: x.k, t0: x.t, t: x.t, usd: 0, n: 0, est: false };
+      g.usd += x.usd; g.n += x.n == null ? 1 : x.n; g.est = g.est || !!x.est; g.t = Math.max(g.t, x.t);
+      if (x.k === 'video' || (x.k === 'image' && g.k === 'analysis')) g.k = x.k;
+      map.set(key, g);
+    }
+    return [...map.values()].sort((a, b) => b.t - a.t).slice(0, limit);
+  },
+  // 최근 n주 (이번 주부터), 주마다 월~일 합계
+  weeks(n = 8) {
+    const d = this.agg().d, ws = weekStart(Date.now()), out = [];
+    for (let i = 0; i < n; i++) {
+      const s = new Date(ws); s.setDate(s.getDate() - 7 * i);
+      const e = new Date(s); e.setDate(e.getDate() + 6);
+      const sk = dayKey(s.getTime()), ek = dayKey(e.getTime());
+      const w = { i, key: sk, s, e, ...blankCost() };
+      for (const [k, v] of Object.entries(d)) if (k >= sk && k <= ek) mergeCost(w, v);
+      out.push(w);
+    }
+    return out;
+  },
+  totals() {
+    const a = this.agg(), now = new Date(), cm = monthKey(now.getTime()), cy = String(now.getFullYear());
+    const ws = weekStart(now.getTime()), wk = dayKey(ws.getTime());
+    const we = new Date(ws); we.setDate(we.getDate() + 6);
+    let month = 0, year = 0, all = 0, est = 0, week = 0;
+    for (const [k, m] of Object.entries(a.m)) { all += m.usd || 0; est += m.est || 0; if (k === cm) month += m.usd || 0; if (k.startsWith(cy + '-')) year += m.usd || 0; }
+    for (const [k, v] of Object.entries(a.d)) if (k >= wk) week += v.usd || 0;
+    return { month, year, all, est, week, cm, cy, ws, we };
+  },
+  // 이전 버전 기록 옮기기: 예전 추정 사용량 → 이번 달, 일별 기록이 없으면 내역에서 다시 계산
+  migrate() {
+    let a = LS.get('costAgg', null);
+    if (!a) {
+      a = { m: {} };
+      const u = LS.get('usage', null);
+      if (u && u.cost > 0) {
+        const t = Date.now();
+        a.m[monthKey(t)] = { usd: u.cost, est: u.cost, by: { image: { usd: (u.images || 0) * COST.img['1K'], n: u.images || 0 }, video: { usd: Math.max(0, u.cost - (u.images || 0) * COST.img['1K']), n: u.videos || 0 }, analysis: { usd: 0, n: u.analyses || 0 } } };
+        LS.set('costLog', [{ t, k: 'legacy', usd: u.cost, est: true, op: 'legacy', lb: '업데이트 전 사용 (추정)', n: 0 }]);
+      }
+    }
+    if (!a.d) { a.d = {}; for (const x of this.log()) addCost(a.d[dayKey(x.t)] || (a.d[dayKey(x.t)] = blankCost()), x); }
+    LS.set('costAgg', a);
+  },
+  reset() { LS.set('costLog', []); LS.set('costAgg', { m: {}, d: {} }); },
+};
+// 환율 (달러 → 원): 하루 두 번까지 무료 환율 API(유럽중앙은행 기준)로 새로고침, 실패하면 저장된 값
+const FX_DEFAULT = 1340;
+const fxInfo = () => { const f = LS.get('fx', null); return f && f.rate > 0 ? f : { rate: FX_DEFAULT, date: '', at: 0, def: true }; };
+async function refreshFx(force) {
+  const f = LS.get('fx', null);
+  if (!force && f && Date.now() - (f.at || 0) < 12 * 3600e3) return false;
+  try {
+    const r = await fetch('https://api.frankfurter.dev/v1/latest?base=USD&symbols=KRW');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const j = await r.json();
+    const rate = Number(j && j.rates && j.rates.KRW);
+    if (!(rate > 100 && rate < 10000)) throw new Error('환율 값이 이상해요');
+    LS.set('fx', { rate, date: String(j.date || ''), at: Date.now() });
+    return true;
+  } catch (e) { if (force) toast('환율을 불러오지 못했어요. 저장된 환율로 계산할게요.'); return false; }
+}
+const fmtUsd = n => { n = Number(n) || 0; if (n <= 0) return '$0'; if (n < 0.01) return '$' + n.toFixed(4).replace(/0+$/, ''); if (n < 1) return '$' + n.toFixed(3).replace(/0$/, ''); return '$' + n.toFixed(2); };
+const fmtKrw = n => { const w = (Number(n) || 0) * fxInfo().rate; return w <= 0 ? '0원' : w < 1 ? '1원 미만' : `약 ${Math.round(w).toLocaleString('ko-KR')}원`; };
+const costLine = c => c ? `이번 ${fmtUsd(c.usd)} (${fmtKrw(c.usd)}${c.est ? ', 추정' : ''})` : '';
 
 async function loadChars() {
   const [chars, metas, jobs] = await Promise.all([DB.all('chars'), DB.all('media'), DB.all('jobs')]);
@@ -611,11 +939,11 @@ async function loadCharMedia() {
   S.media = list;
   if (!list.some(m => m.id === S.videoForm.sourceId && m.kind === 'image')) S.videoForm.sourceId = (list.find(m => m.kind === 'image') || {}).id || null;
 }
-async function saveMediaRec({ charId, kind, blob, thumb, label, prompt, ratio, sourceId }) {
+async function saveMediaRec({ charId, kind, blob, thumb, label, prompt, ratio, sourceId, extra }) {
   const id = uid();
   const mime = blob.type || (kind === 'video' ? 'video/mp4' : 'image/jpeg');
   await DB.put('blobs', { id, buf: await blob.arrayBuffer(), mime });
-  const meta = { id, charId, kind, mime, thumb, label: label || '', prompt: prompt || '', ratio: ratio || '', sourceId: sourceId || null, createdAt: Date.now() };
+  const meta = { id, charId, kind, mime, thumb, label: label || '', prompt: prompt || '', ratio: ratio || '', sourceId: sourceId || null, createdAt: Date.now(), ...(extra || {}) };
   await DB.put('media', meta);
   cacheBlob(id, blob);
   const c = S.counts[charId] || (S.counts[charId] = { img: 0, vid: 0 });
@@ -657,6 +985,8 @@ const OPTIONAL = [
   { path: ['store'], re: /\bstore\b/i },
   { path: ['response_format', 'mime_type'], re: /mime_?type/i },
   { path: ['response_format', 'image_size'], re: /image_?size/i },
+  { path: ['response_format', 'duration'], re: /duration/i },
+  { path: ['response_format', 'delivery'], re: /delivery/i },
   { path: ['generation_config'], re: /thinking|generation_?config|video_?config|\btask\b/i },
 ];
 function stripOptional(b, msg) {
@@ -671,7 +1001,7 @@ function stripOptional(b, msg) {
 // Interactions API 호출 (모델 이름이 바뀌었을 때 예비 모델로 자동 전환)
 async function callModel(kind, body, { background = false } = {}) {
   const m = getModels();
-  const list = [modelOK[kind], m[kind], ...MODEL_FALLBACKS[kind]].filter((v, i, a) => v && a.indexOf(v) === i);
+  const list = [modelOK[kind], m[kind], MODEL_DEFAULTS[kind], ...MODEL_FALLBACKS[kind]].filter((v, i, a) => v && a.indexOf(v) === i);
   let firstErr = null;
   for (const model of list) {
     const b = { ...body, model };
@@ -682,6 +1012,7 @@ async function callModel(kind, body, { background = false } = {}) {
       try {
         const r = await gfetch('/interactions', { body: b });
         modelOK[kind] = model;
+        if (r && typeof r === 'object') r.__model = model;
         return r;
       } catch (e) {
         lastErr = e;
@@ -723,58 +1054,115 @@ function extractOutputs(inter) {
   return out;
 }
 const hasMedia = inter => { const o = extractOutputs(inter); return o.images.length + o.videos.length > 0; };
-function interFailMsg(inter) {
+// 응답을 '자세히'에 보여줄 수 있게 정리 (사진·영상 같은 큰 데이터는 길이만 남김)
+function sanitizeInter(x, depth = 0) {
+  if (typeof x === 'string') return x.length > 400 ? `<${x.length}자 생략>` : x;
+  if (!x || typeof x !== 'object') return x;
+  if (depth > 6) return '…';
+  if (Array.isArray(x)) return x.slice(0, 12).map(v => sanitizeInter(v, depth + 1));
+  const o = {};
+  for (const k of Object.keys(x)) o[k] = sanitizeInter(x[k], depth + 1);
+  return o;
+}
+// 실패 응답 어딘가에 들어 있는 이유 문장 찾기 (error·reason·message·safety 등)
+function findReasons(x, out = [], depth = 0) {
+  if (!x || typeof x !== 'object' || depth > 6 || out.length >= 4) return out;
+  for (const k of Object.keys(x)) {
+    const v = x[k];
+    if (typeof v === 'string') {
+      if (v.length < 400 && /reason|message|error|block|safety|refus|filter|detail|violat/i.test(k)) out.push(v);
+    } else if (v && typeof v === 'object') findReasons(v, out, depth + 1);
+  }
+  return out;
+}
+// 생성이 실패로 끝난 응답 → 이유가 담긴 오류 (이유가 없으면 '미공개' 표시)
+function interFail(inter) {
+  const reasons = [];
   const e = inter && inter.error;
-  if (e) return e.message || JSON.stringify(e);
-  const t = extractOutputs(inter).texts.join(' ').trim();
-  return t || `생성이 끝나지 않았어요 (상태: ${(inter && inter.status) || '알 수 없음'})`;
+  if (e) reasons.push(typeof e === 'string' ? e : (e.message || e.code || e.status || ''));
+  findReasons(inter, reasons);
+  reasons.push(...extractOutputs(inter).texts);
+  const reason = [...new Set(reasons.map(s => String(s || '').trim()).filter(s => s && !/^(failed|error)$/i.test(s)))].join(' / ').slice(0, 300);
+  const st = (inter && inter.status) || '알 수 없음';
+  const err = new ApiError(reason || `구글이 생성을 마치지 못했어요 (상태: ${st}, 이유는 알려주지 않음)`,
+    { code: reason && /safety|block|prohibit|policy|recogni|responsible|violat|harm|sensitive/i.test(reason) ? 'BLOCKED' : 'GEN_FAILED', unexplained: !reason });
+  try { err.raw = JSON.stringify(sanitizeInter(inter)).slice(0, 1600); } catch {}
+  return err;
+}
+async function fetchMedia(url, mime) {
+  const u = new URL(url);
+  if (/googleapis\.com$/.test(u.hostname) && !u.searchParams.has('key')) u.searchParams.set('key', getKey());
+  let r;
+  try { r = await fetch(u.toString()); } catch { throw new ApiError('결과 파일을 내려받지 못했어요', { network: true }); }
+  if (!r.ok) throw new ApiError(`결과 파일 다운로드 실패 (HTTP ${r.status})`, { status: r.status });
+  const b = await r.blob();
+  return b.type && !/json|text\/html/.test(b.type) ? b : new Blob([b], { type: mime });
 }
 async function mediaToBlob(o) {
   if (o.data) return b64ToBlob(o.data, o.mime);
   if (o.uri) {
-    const u = new URL(o.uri);
-    if (/googleapis\.com$/.test(u.hostname) && !u.searchParams.has('key')) u.searchParams.set('key', getKey());
-    let r;
-    try { r = await fetch(u.toString()); } catch { throw new ApiError('결과 파일을 내려받지 못했어요', { network: true }); }
-    if (!r.ok) throw new ApiError(`결과 파일 다운로드 실패 (HTTP ${r.status})`, { status: r.status });
-    const b = await r.blob();
-    return b.type ? b : new Blob([b], { type: o.mime });
+    // URI 전송(큰 영상): Files API 파일이면 준비(ACTIVE)될 때까지 기다렸다가 내려받기
+    const f = String(o.uri).match(/googleapis\.com\/v1(?:beta)?\/(files\/[\w-]+)/);
+    if (!f) return fetchMedia(o.uri, o.mime);
+    let info = {};
+    for (let i = 0; i < 100; i++) {
+      info = await gfetch('/' + f[1], { method: 'GET' });
+      const st = String(info.state || '').toUpperCase();
+      if (st === 'FAILED') throw new ApiError('구글 쪽에서 영상 파일 준비에 실패했어요', { code: 'GEN_FAILED' });
+      if (!st || st === 'ACTIVE') break;
+      await sleep(3000);
+    }
+    return fetchMedia(info.downloadUri || info.download_uri || `https://generativelanguage.googleapis.com/download/v1beta/${f[1]}:download?alt=media`, o.mime);
   }
   throw new ApiError('결과에 파일이 없어요');
 }
 
-/* ----- 프롬프트 ----- */
-function analysisPrompt(prefs, n) {
-  const c = [];
-  if (prefs.gender !== 'auto') c.push(`The new person MUST be ${prefs.gender}.`);
-  if (prefs.age !== 'auto') c.push(`The new person should be about ${prefs.age} years old.`);
-  if (prefs.extra && prefs.extra.trim()) c.push(`Also reflect these wishes from the user (Korean): "${prefs.extra.trim()}".`);
-  return `You are a visual-taste analyst for a character-creation app.
-The user picked ${n} photos of celebrities they find attractive.
-Rules:
-- Do NOT identify, name, or guess who anyone is. Never output real people's names.
-- Infer the user's taste only from visual traits the photos share.
-Task:
-1) Find what the photos have in common: gender presentation, apparent age range, overall look and ethnicity, face shape, eyes (shape, size, eyelids), eyebrows, nose, lips, skin tone and texture, hair (length, style, color), makeup or grooming, typical expression, aura/vibe, fashion style, body type impression.
-2) Design ONE brand-new fictional adult (age 20 to 35) who fits that taste but is clearly a different individual from every photo. Blend and abstract the traits; never copy a single face.
-${c.join('\n')}
-Return ONLY a JSON object with exactly these keys:
-{"name_ko": "a fictional Korean given name (2 syllables) that is not a famous person's name",
-"gender": "female" or "male",
-"age": integer from 20 to 35,
-"keywords_ko": ["5-8 short Korean keywords describing the shared taste, e.g. 청순, 큰 눈, 긴 생머리"],
-"taste_summary_ko": "2-3 friendly Korean sentences describing the common taste you found",
-"persona_ko": "1-2 Korean sentences giving the new person a warm fictional persona (job, hobby, vibe)",
-"appearance_en": "70-120 words. Precise physical description of the NEW person for an image generator: overall look and ethnicity, face shape, eyes, brows, nose, lips, skin, hair, makeup or grooming, height and build. No names, no celebrity references.",
-"style_en": "20-40 words: signature fashion style and color palette",
-"vibe_en": "10-20 words: aura and typical expression"}`;
+/* ----- 비용 계산: 구글이 응답마다 알려주는 사용량(토큰) × 구글 가격표 ----- */
+// USD / 100만 토큰 · Gemini API 유료(Standard) 가격 · 2026년 11월 기준
+const PRICES = [
+  { re: /omni-1\.1/, in: 1.5, text: 9, video: 17.5 },
+  { re: /omni/, in: 1.5, text: 9, video: 12 },
+  { re: /nano-banana/, in: 1.5, text: 7.5, image: 30 },
+  { re: /flash-lite-image/, in: 0.25, text: 1.5, image: 30 },
+  { re: /image/, in: 0.5, text: 3, image: 60 },
+  { re: /flash-lite/, in: 0.25, text: 1.5 },
+  { re: /./, in: 0.75, text: 3.75 },
+];
+function usageUsd(model, u) {
+  if (!u || typeof u !== 'object') return null;
+  const p = PRICES.find(x => x.re.test(String(model || ''))), num = v => (Number.isFinite(Number(v)) ? Number(v) : 0);
+  const byIn = Array.isArray(u.input_tokens_by_modality) ? u.input_tokens_by_modality : [];
+  const inTok = num(u.total_input_tokens) || byIn.reduce((s, x) => s + num(x && x.tokens), 0);
+  const thought = num(u.total_thought_tokens);
+  const out = { text: 0, image: 0, video: 0 };
+  const byOut = Array.isArray(u.output_tokens_by_modality) ? u.output_tokens_by_modality : [];
+  if (byOut.length) {
+    for (const x of byOut) {
+      let m = String((x && x.modality) || '').toLowerCase();
+      if (m === 'audio' && p.video) m = 'video'; // 영상의 소리는 영상 요금에 포함
+      out[m in out ? m : 'text'] += num(x && x.tokens);
+    }
+  } else out[p.video ? 'video' : p.image ? 'image' : 'text'] = num(u.total_output_tokens);
+  if (!inTok && !thought && !out.text && !out.image && !out.video) return null;
+  return (inTok * p.in + (out.text + thought) * p.text + out.image * (p.image || p.text) + out.video * (p.video || p.text)) / 1e6;
 }
+// 응답 하나의 비용을 장부에 적어요 (사용량이 없으면 추정치 fallback)
+function recordCost(kind, inter, op, fallback = 0, n) {
+  const model = (inter && (inter.__model || inter.model)) || getModels()[kind];
+  let usd = usageUsd(model, inter && inter.usage), est = false;
+  if (usd == null) { if (!(fallback > 0)) return null; usd = fallback; est = true; }
+  Costs.add({ k: kind, usd, est, op: op ? op.id : null, lb: (op && op.lb) || KIND_KO[kind], ch: (op && op.ch) || null, model, n });
+  return { usd, est };
+}
+const newOp = (lb, ch) => ({ id: uid(), lb, ch: ch || null });
+
+/* ----- 프롬프트 ----- */
 const who = p => `a ${p.age}-year-old ${p.gender === 'male' ? 'man' : 'woman'}`;
 const SAFE_TAIL = 'No text, no watermark, no border. Tasteful and non-sexual. The person is an adult.';
 function portraitPrompt(p, angle, tweak) {
-  return `Create a photorealistic portrait photograph of a brand-new fictional person. This is NOT a real person and must not resemble any celebrity or public figure.
+  return `Create a photorealistic portrait photograph of a brand-new fictional person. This is NOT a real person and must not be a lookalike of any specific celebrity or public figure.
 Person: ${who(p)}. ${p.appearance}
-Style: ${p.style}
+${keyFeatureLines(p)}Style: ${p.style}
 Vibe: ${p.vibe}
 Shot: head-and-shoulders portrait, ${angle}, natural relaxed expression, soft flattering light, clean softly blurred neutral background, sharp focus on the eyes, natural skin texture, looks like a real photo from a full-frame camera with an 85mm lens.${tweak ? `\nUser adjustment request (Korean): ${tweak}` : ''}
 ${SAFE_TAIL}`;
@@ -782,13 +1170,26 @@ ${SAFE_TAIL}`;
 function tweakPrompt(p, tweak) {
   return `The attached image is a portrait of a fictional person (not a real person). Create a new photorealistic head-and-shoulders portrait of the SAME person, keeping their identity recognizable, but apply this adjustment requested by the user (Korean): ${tweak}
 Person: ${who(p)}. ${p.appearance}
-Soft flattering light, clean softly blurred neutral background, natural skin texture, real-photo look.
+${keyFeatureLines(p)}Soft flattering light, clean softly blurred neutral background, natural skin texture, real-photo look.
 ${SAFE_TAIL}`;
+}
+function refSetPrompt(ch, shot) {
+  return `The attached reference image(s) all show the same fictional person named ${ch.name}, ${who(ch)} (not a real person).
+Create a NEW photorealistic reference photo of exactly this person for a character reference sheet. Keep the identity identical to the references: same face shape, eyes, eyebrows, nose, lips, skin tone, hairstyle and hair color, and body proportions.
+${ch.face ? `Face identity (keep exactly): ${ch.face}\n` : ''}Appearance notes: ${ch.appearance}
+If any written note conflicts with the reference images, follow the reference images.
+Framing: ${shot.en}
+Outfit: their signature style - ${ch.style}
+Background: plain light-gray studio backdrop with soft, even lighting, so the face and body are clearly visible.
+Expression: natural and relaxed, with a slight smile.
+Photography: realistic skin texture, sharp focus, high detail. Aspect ratio ${shot.ratio}.
+Only this one person. ${SAFE_TAIL}`;
 }
 function scenePrompt(ch, { scene, shot, outfit, ratio }) {
   return `The attached reference image(s) all show the same fictional person named ${ch.name}, ${who(ch)} (not a real person).
 Create a NEW photorealistic photo of exactly this person. Keep the identity identical to the references: same face shape, eyes, eyebrows, nose, lips, skin tone, hairstyle and hair color, and body proportions.
-Appearance notes: ${ch.appearance}
+${ch.face ? `Face identity (keep exactly): ${ch.face}\n` : ''}Appearance notes: ${ch.appearance}
+If any written note conflicts with the reference images, follow the reference images.
 Scene: ${scene}
 Framing: ${shot}
 Outfit: ${outfit || `their signature style - ${ch.style}`}
@@ -807,11 +1208,13 @@ function videoPrompt(ch, f) {
   if (scene) {
     L.push(`Create a realistic ${f.secs}-second video of the same person shown in the reference images, ${who}.`);
     L.push('Use the reference images only to keep the face, identity and hairstyle exactly the same. Do not show the reference photos themselves.');
+    if (identityText(ch)) L.push(`Identity details: ${identityText(ch)}`);
     L.push(`Setting: ${where || 'a natural setting that suits the person'}`);
     L.push(`Outfit: ${outfit || `their signature style - ${ch.style}`}`);
   } else {
     L.push(`Animate this photo into a realistic ${f.secs}-second video of the same person, ${who}.`);
     L.push('Keep the face, identity, hairstyle and outfit exactly as in the image, and keep the setting consistent.');
+    if (identityText(ch)) L.push(`Identity details (must stay the same in every frame): ${identityText(ch)}`);
   }
   L.push(`Action: ${d.action}`);
   L.push(`Camera: ${d.cam}`);
@@ -823,8 +1226,54 @@ function videoPrompt(ch, f) {
   L.push('Smooth, natural, realistic motion. One continuous shot. No text, subtitles or captions on screen.');
   return L.join('\n');
 }
-// 새 장면 모드: 기준 사진을 <IMAGE_REF_n> 으로 선언
-const refHeader = n => `[# References ${Array.from({ length: n }, (_, i) => `<IMAGE_REF_${i}>@Image${i + 1}`).join(', ')}]\nUse the given image(s) as references for video generation.`;
+// 새 장면 모드: 기준 사진들의 역할을 평범한 문장으로 알려 줌 (Omni 1.2부터 <IMAGE_REF_n> 태그는 권장되지 않음)
+const refHeader = n => n > 1
+  ? `Reference images: the ${n} images above all show the same person. Use them only as identity references for the face, hair and body. They are not frames of the video.`
+  : 'Reference image: the image above shows the person. Use it only as an identity reference for the face, hair and body. It is not a frame of the video.';
+
+/* ----- 대사 2단계: 대사 영상이 거절되면 ① 말없는 짧은 첫 장면 → ② 그 영상을 이어서 대사 -----
+   (구글 문서: 대사·말소리는 '모델이 만든 영상을 이어서 만들 때(previous_interaction_id)' 지원) */
+const OPEN_SECS = 3;
+const speakSecs = s => Math.max(3, Math.min(10, Math.round(s || 8)));
+function openingPrompt(ch, f) {
+  const d = directionParts(ch, f);
+  const scene = f.src === 'scene';
+  const who = `${ch.name} (a fictional adult, about ${ch.age} years old)`;
+  const L = [];
+  if (scene) {
+    const sc = findOpt(SCENES, f.scene);
+    const where = f.scene === 'custom' ? String(f.sceneCustom || '').trim() : sc.en;
+    L.push(`Create a realistic ${OPEN_SECS}-second opening shot of the same person shown in the reference images, ${who}.`);
+    L.push('Use the reference images only to keep the face, identity and hairstyle exactly the same. Do not show the reference photos themselves.');
+    if (identityText(ch)) L.push(`Identity details: ${identityText(ch)}`);
+    L.push(`Setting: ${where || 'a natural setting that suits the person'}`);
+    L.push(`Outfit: ${String(f.outfit || '').trim() || `their signature style - ${ch.style}`}`);
+  } else {
+    L.push(`Animate this photo into a realistic ${OPEN_SECS}-second opening shot of the same person, ${who}.`);
+    L.push('Keep the face, identity, hairstyle and outfit exactly as in the image, and keep the setting consistent.');
+    if (identityText(ch)) L.push(`Identity details (must stay the same in every frame): ${identityText(ch)}`);
+  }
+  L.push('Action: the person comes to life with subtle, natural motion - a soft breath and a blink - then looks into the camera with a warm, relaxed expression, as if about to say something.');
+  L.push(`Camera: ${d.cam}`);
+  if (d.look) L.push(`Look: ${d.look}`);
+  L.push('Dialogue: none. The person does not speak yet.');
+  L.push(`Sound design: ${d.sound}.`);
+  L.push(d.music ? `Music: ${d.music}.` : 'Music: none. No background music.');
+  L.push('Smooth, natural, realistic motion. One continuous shot. No text, subtitles or captions on screen.');
+  return L.join('\n');
+}
+function speakPrompt(ch, f) {
+  const d = directionParts(ch, f);
+  const L = [`Extend this video: continue seamlessly from its last frame for about ${speakSecs(f.secs)} seconds, as one continuous shot.`,
+    'Keep exactly the same person, face, identity, hairstyle, outfit, setting, lighting and camera style.',
+    `Action: ${d.action}`, `Camera: ${d.cam}`];
+  if (d.note) L.push(`Director's note: ${d.note}`);
+  L.push(`Dialogue: ${d.speech}`);
+  L.push(`Sound design: ${d.sound}.`);
+  L.push(d.music ? `Music: ${d.music}, mixed quietly under the voice.` : 'Music: none. No background music.');
+  L.push('Smooth, natural, realistic motion. No text, subtitles or captions on screen.');
+  return L.join('\n');
+}
 
 /* ----- 생성 함수 ----- */
 function parseJSONLoose(t) {
@@ -834,10 +1283,29 @@ function parseJSONLoose(t) {
   if (m) { try { return JSON.parse(m[0]); } catch {} }
   return null;
 }
+// 사진을 보고 JSON으로 답하는 공통 호출 (얼굴 분석·취향 일치도)
+async function askVisionJSON(images, text, op) {
+  const input = images.map(im => ({ type: 'image', mime_type: im.mime || 'image/jpeg', data: im.b64 }));
+  input.push({ type: 'text', text });
+  const inter = await callModel('analysis', { input, response_format: { type: 'text', mime_type: 'application/json' }, generation_config: { thinking_level: 'low' }, store: false });
+  recordCost('analysis', inter, op, 0.003);
+  return parseJSONLoose(extractOutputs(inter).texts.join('\n').trim());
+}
+async function describeFace(blob, op) {
+  if (!getKey()) return null;
+  const j = await askVisionJSON([{ b64: await blobToB64(blob) }], facePrompt(), op || newOp('얼굴 특징 분석'));
+  return j && j.face_en ? String(j.face_en).trim().slice(0, 900) : null;
+}
+async function scoreFaces(photos, blobs, p) {
+  const cands = await Promise.all(blobs.map(async b => ({ b64: await blobToB64((await resizeBlob(b, 512, 0.85)).blob) })));
+  const j = await askVisionJSON([...photos.map(x => ({ b64: x.b64 })), ...cands], scorePrompt(p, photos.length, blobs.length), newOp('후보 얼굴 취향 일치도'));
+  return parseScores(j, blobs.length);
+}
 async function analyzePhotos(photos, prefs) {
   const input = photos.map(p => ({ type: 'image', mime_type: 'image/jpeg', data: p.b64 }));
   input.push({ type: 'text', text: analysisPrompt(prefs, photos.length) });
   const inter = await callModel('analysis', { input, response_format: { type: 'text', mime_type: 'application/json' }, generation_config: { thinking_level: 'low' }, store: false });
+  recordCost('analysis', inter, newOp('사진 5장 취향 분석'), 0.005);
   const txt = extractOutputs(inter).texts.join('\n').trim();
   const j = parseJSONLoose(txt);
   if (!j || typeof j !== 'object') throw new ApiError(txt ? '분석 결과를 읽지 못했어요: ' + txt.slice(0, 200) : '분석 결과가 비어 있어요. 다시 시도해 주세요.');
@@ -851,22 +1319,28 @@ async function analyzePhotos(photos, prefs) {
     keywords: (Array.isArray(j.keywords_ko) ? j.keywords_ko : []).map(String).slice(0, 8),
     summary: String(j.taste_summary_ko || ''),
     persona: String(j.persona_ko || ''),
+    points: strList(j.match_points_ko, 6),
+    features: strList(j.key_features_en, 6),
     appearance: String(j.appearance_en || ''),
     style: String(j.style_en || ''),
     vibe: String(j.vibe_en || ''),
   };
 }
-async function generateImage({ refs = [], prompt, ratio = '3:4', size }) {
+async function generateImage({ refs = [], prompt, ratio = '3:4', size, op }) {
   const input = refs.map(r => ({ type: 'image', mime_type: r.mime || 'image/jpeg', data: r.b64 }));
   input.push({ type: 'text', text: prompt });
+  const sz = size || LS.get('imgSize', '1K');
   const inter = await callModel('image', {
     input,
-    response_format: { type: 'image', mime_type: 'image/jpeg', aspect_ratio: ratio, image_size: size || LS.get('imgSize', '1K') },
+    response_format: { type: 'image', mime_type: 'image/jpeg', aspect_ratio: ratio, image_size: sz },
     store: false,
   });
   const out = extractOutputs(inter);
+  const cost = recordCost('image', inter, op, out.images.length ? (COST.img[sz] || COST.img['1K']) : 0, out.images.length ? 1 : 0);
   if (!out.images.length) throw new ApiError(out.texts.join(' ').trim() || '이미지가 만들어지지 않았어요.', { code: 'BLOCKED' });
-  return mediaToBlob(out.images[out.images.length - 1]);
+  const blob = await mediaToBlob(out.images[out.images.length - 1]);
+  if (cost) { blob.usd = cost.usd; blob.est = cost.est; }
+  return blob;
 }
 async function loadRefs(ch) {
   const out = [];
@@ -880,87 +1354,158 @@ async function loadRefs(ch) {
   return out;
 }
 
-/* ----- 영상 작업 (백그라운드 + 폴링, 앱을 다시 열면 이어받기) ----- */
+/* ----- 영상 작업 (백그라운드 + 폴링, 앱을 다시 열면 이어받기) -----
+   job.step: 'main' 한 번에 만들기 | 'open' 2단계 ① 말없는 첫 장면 | 'speak' 2단계 ② 이어서 대사 */
 const polling = new Set();
 const startingNow = new Set();
+const STEP_KO = { main: '한 번에 만들기', open: '2단계 ① 첫 장면', speak: '2단계 ② 이어서 대사' };
 async function removeJob(id) { S.jobs = S.jobs.filter(j => j.id !== id); try { await DB.del('jobs', id); } catch {} }
-async function failJob(job, e) {
-  job.status = 'failed';
-  job.error = friendlyError(e);
-  job.errorRaw = String((e && e.message) || e).slice(0, 600);
+async function saveJob(job) {
   const j = S.jobs.find(x => x.id === job.id);
   if (j && j !== job) Object.assign(j, job);
   try { await DB.put('jobs', job); } catch {}
+}
+function jobErrDetail(job, e) {
+  const L = [String((e && e.message) || e)];
+  L.push(`단계: ${STEP_KO[job.step] || STEP_KO.main} · ${job.mode === 'scene' ? '새 장면' : '사진에서 시작'}${job.hasLine ? ' · 대사 있음' : ''} · ${job.res || ''} · ${job.secs || ''}초${job.model ? ' · ' + job.model : ''}`);
+  if (job.firstError) L.push('처음 시도: ' + job.firstError);
+  if (e && e.raw) L.push('구글 응답: ' + e.raw);
+  return L.join('\n').slice(0, 2400);
+}
+async function failJob(job, e) {
+  job.status = 'failed';
+  job.error = friendlyError(e);
+  job.errorRaw = jobErrDetail(job, e);
+  await saveJob(job);
   toast('영상 생성 실패: ' + job.error, 4500);
   renderSoon(); updateWakeLock();
 }
 async function finishVideoJob(job, inter) {
   const out = extractOutputs(inter);
-  if (!out.videos.length) throw new ApiError(out.texts.join(' ').trim() || (inter && inter.error && inter.error.message) || '영상이 만들어지지 않았어요.', { code: 'BLOCKED' });
+  if (!out.videos.length) {
+    const e = interFail(inter);
+    if (e.unexplained) e.message = '구글이 영상을 돌려주지 않았어요 (이유는 알려주지 않음)';
+    else e.code = 'BLOCKED';
+    throw e;
+  }
   const blob = await mediaToBlob(out.videos[out.videos.length - 1]);
-  const m = await saveMediaRec({ charId: job.charId, kind: 'video', blob, thumb: job.thumb, label: job.label, prompt: job.prompt, ratio: job.ratio, sourceId: job.sourceId });
-  addUsage('videos', (COST.vidSec[job.res] || 0.1) * (job.secs || COST.vidLen));
+  const vthumb = await videoThumb(blob); // 썸네일은 영상 속 대표 장면
+  const cost = job.usd != null ? { usd: job.usd, est: !!job.est } : null;
+  const m = await saveMediaRec({ charId: job.charId, kind: 'video', blob, thumb: vthumb || job.thumb, label: job.label, prompt: job.step === 'speak' ? job.speakPrompt : job.prompt, ratio: job.ratio, sourceId: job.sourceId,
+    extra: { vt: vthumb ? 1 : -1, ...(cost ? { usd: cost.usd, est: cost.est } : {}) } });
   await removeJob(job.id);
   if (S.charId === job.charId) S.media.unshift(m);
   const ch = S.chars.find(c => c.id === job.charId);
-  toast(`🎬 ${ch ? ch.name + '의 ' : ''}영상이 완성됐어요!`, 3500);
+  toast(`🎬 ${ch ? ch.name + '의 ' : ''}영상이 완성됐어요!${cost ? ' · ' + costLine(cost) : ''}`, 4000);
   renderSoon(); updateWakeLock();
 }
-async function startVideo(prm) {
-  const job = { id: uid(), ...prm, createdAt: Date.now(), status: 'starting' };
-  S.jobs.push(job); startingNow.add(job.id);
-  try { await DB.put('jobs', job); } catch {}
+// 끝난 단계의 비용 기록 (영상이 나온 단계만 추정치로 채움)
+function recordVideoCost(job, inter) {
+  const vids = extractOutputs(inter).videos.length;
+  const secs = job.step === 'open' ? OPEN_SECS : job.step === 'speak' ? speakSecs(job.secs) : (job.secs || COST.vidLen);
+  const c = recordCost('video', inter, { id: job.id, lb: '영상 · ' + job.label, ch: job.charId }, vids ? (COST.vidSec[job.res] || COST.vidSec['720p']) * secs : 0, vids && job.step !== 'open' ? 1 : 0);
+  if (c) { job.usd = (job.usd || 0) + c.usd; job.est = !!(job.est || c.est); }
+}
+const durStr = s => `${Math.max(3, Math.min(15, Math.round(s || COST.vidLen)))}s`;
+// 지금 단계에 맞는 요청 만들기 (큰 영상도 받을 수 있게 URI 전송 요청)
+async function stepBody(job) {
+  if (job.step === 'speak') {
+    return {
+      previous_interaction_id: job.openIid,
+      input: [{ type: 'text', text: job.speakPrompt }],
+      response_format: { type: 'video', resolution: job.res, duration: durStr(speakSecs(job.secs)), delivery: 'uri' },
+      generation_config: { video_config: { task: 'extend' } },
+    };
+  }
+  const text = job.step === 'open' ? job.openPrompt : job.prompt;
+  const rf = { type: 'video', aspect_ratio: job.ratio, resolution: job.res, duration: durStr(job.step === 'open' ? OPEN_SECS : job.secs), delivery: 'uri' };
+  if (job.mode === 'scene') {
+    // 새 장면: 기준 사진들은 얼굴 참고용 (첫 장면으로 쓰지 않음)
+    const ch = S.chars.find(c => c.id === job.charId);
+    if (!ch) throw new ApiError('인물을 찾지 못했어요');
+    const refs = await loadRefs({ refIds: (job.refIds && job.refIds.length ? job.refIds : ch.refIds) });
+    return {
+      input: [...refs.map(r => ({ type: 'image', mime_type: r.mime, data: r.b64 })), { type: 'text', text: refHeader(refs.length) + '\n' + text }],
+      response_format: rf,
+      generation_config: { video_config: { task: 'reference_to_video' } },
+    };
+  }
+  const src = await getBlob(job.sourceId);
+  const { blob: small } = await resizeBlob(src, 1280, 0.9);
+  return { input: [{ type: 'image', mime_type: 'image/jpeg', data: await blobToB64(small) }, { type: 'text', text }], response_format: rf };
+}
+async function runStep(job) {
+  job.status = 'starting'; job.iid = null; job.stepAt = Date.now();
+  startingNow.add(job.id);
+  await saveJob(job);
   renderSoon(); updateWakeLock();
+  let inter = null, err = null;
   try {
-    let body;
-    if (prm.mode === 'scene') {
-      // 새 장면: 기준 사진들은 얼굴 참고용 (첫 장면으로 쓰지 않음)
-      const ch = S.chars.find(c => c.id === prm.charId);
-      if (!ch) throw new ApiError('인물을 찾지 못했어요');
-      const refs = await loadRefs({ refIds: (prm.refIds && prm.refIds.length ? prm.refIds : ch.refIds) });
-      body = {
-        input: [...refs.map(r => ({ type: 'image', mime_type: r.mime, data: r.b64 })), { type: 'text', text: refHeader(refs.length) + '\n' + prm.prompt }],
-        response_format: { type: 'video', aspect_ratio: prm.ratio, resolution: prm.res },
-        generation_config: { video_config: { task: 'reference_to_video' } },
-      };
-    } else {
-      const src = await getBlob(prm.sourceId);
-      const { blob: small } = await resizeBlob(src, 1280, 0.9);
-      const b64 = await blobToB64(small);
-      body = {
-        input: [{ type: 'image', mime_type: 'image/jpeg', data: b64 }, { type: 'text', text: prm.prompt }],
-        response_format: { type: 'video', aspect_ratio: prm.ratio, resolution: prm.res },
-      };
+    inter = await callModel('video', await stepBody(job), { background: true });
+    job.model = modelOK.video || job.model;
+    if (!(inter.status === 'completed' || (!inter.status && hasMedia(inter)))) {
+      if (!(inter.id && (inter.status === 'in_progress' || inter.status === 'queued' || !inter.status))) throw interFail(inter);
+      job.iid = inter.id; job.status = 'running'; inter = null;
+      await saveJob(job);
     }
-    const inter = await callModel('video', body, { background: true });
-    if (inter.status === 'completed' || (!inter.status && hasMedia(inter))) {
-      await finishVideoJob(job, inter);
-    } else if (inter.id && (inter.status === 'in_progress' || inter.status === 'queued' || !inter.status)) {
-      job.iid = inter.id; job.status = 'running';
-      try { await DB.put('jobs', job); } catch {}
-      pollJob(job);
-    } else throw new ApiError(interFailMsg(inter));
-  } catch (e) { await failJob(job, e); }
-  finally { startingNow.delete(job.id); renderSoon(); }
+  } catch (e) { err = e; }
+  startingNow.delete(job.id);
+  if (err) await stepFailed(job, err);
+  else if (inter) await stepDone(job, inter);
+  else pollJob(job);
+  renderSoon();
 }
 async function pollJob(job) {
   if (polling.has(job.id)) return;
   polling.add(job.id); updateWakeLock();
+  let done = null, err = null;
   try {
     let errs = 0;
     for (;;) {
       await sleep(5000);
-      if (!S.jobs.some(j => j.id === job.id)) return;
-      if (Date.now() - job.createdAt > 30 * 60e3) throw new ApiError('30분이 지나도 끝나지 않아 중단했어요');
+      if (!S.jobs.some(j => j.id === job.id)) break;
+      if (Date.now() - (job.stepAt || job.createdAt) > 30 * 60e3) throw new ApiError('30분이 지나도 끝나지 않아 중단했어요');
       let inter;
       try { inter = await gfetch('/interactions/' + encodeURIComponent(job.iid), { method: 'GET' }); errs = 0; }
       catch (e) { if ((e.network || e.status >= 500 || e.status === 429) && ++errs < 40) continue; throw e; }
       const st = inter.status;
-      if (st === 'completed' || (!st && hasMedia(inter))) { await finishVideoJob(job, inter); return; }
-      if (st && st !== 'in_progress' && st !== 'queued') throw new ApiError(interFailMsg(inter));
+      if (st === 'completed' || (!st && hasMedia(inter))) { done = inter; break; }
+      if (st && st !== 'in_progress' && st !== 'queued') throw interFail(inter);
     }
-  } catch (e) { await failJob(job, e); }
-  finally { polling.delete(job.id); updateWakeLock(); renderSoon(); }
+  } catch (e) { err = e; }
+  polling.delete(job.id);
+  if (err) await stepFailed(job, err);
+  else if (done) await stepDone(job, done);
+  updateWakeLock(); renderSoon();
+}
+async function stepDone(job, inter) {
+  try {
+    recordVideoCost(job, inter);
+    if (job.step === 'open') {
+      if (!hasMedia(inter)) throw interFail(inter);
+      job.openIid = inter.id || job.iid;
+      job.step = 'speak';
+      return await runStep(job);
+    }
+    await finishVideoJob(job, inter);
+  } catch (e) { await stepFailed(job, e); }
+}
+// 대사가 든 영상이 거절되면(이유 미공개·안전 필터) 한 번은 자동으로 2단계 방식으로 다시 만듦
+async function stepFailed(job, e) {
+  const refused = e && (e.code === 'GEN_FAILED' || e.code === 'BLOCKED' || (e.status === 400 && /safety|block|prohibit|policy|recogni|responsible|violat|harm|sensitive/i.test(e.message || '')));
+  if (refused && (job.step || 'main') === 'main' && job.hasLine && job.openPrompt && job.speakPrompt && !job.viaChain) {
+    job.viaChain = true;
+    job.firstError = String((e && e.message) || e).slice(0, 200) + (e && e.raw ? '\n' + e.raw.slice(0, 700) : '');
+    job.step = 'open';
+    toast('대사 영상이 거절돼서 2단계(첫 장면 → 이어서 대사)로 다시 만들고 있어요', 4500);
+    return runStep(job);
+  }
+  await failJob(job, e);
+}
+async function startVideo(prm) {
+  const job = { id: uid(), ...prm, step: prm.step || 'main', createdAt: Date.now(), status: 'starting' };
+  S.jobs.push(job);
+  return runStep(job);
 }
 function resumeJobs() {
   for (const j of S.jobs) {
@@ -972,7 +1517,7 @@ function resumeJobs() {
 /* ================= 화면 유지 ================= */
 let wakeLock = null;
 async function updateWakeLock() {
-  const need = !!S.busy || !!S.create.busy || S.jobs.some(j => j.status === 'running' || j.status === 'starting');
+  const need = !!S.busy || !!S.create.busy || !!S.refJob || S.jobs.some(j => j.status === 'running' || j.status === 'starting');
   try {
     if (need && !wakeLock && 'wakeLock' in navigator && document.visibilityState === 'visible') {
       wakeLock = await navigator.wakeLock.request('screen');
@@ -993,6 +1538,7 @@ function friendlyError(e) {
   if (e.status === 401 || e.status === 403) return /billing|paid|prepay/i.test(m) ? '이 기능은 결제가 연결된 키에서만 돼요. Google AI Studio에서 결제를 연결해 주세요.' : '권한이 없어요. API 키와 결제 설정을 확인해 주세요.';
   if (e.status >= 500) return 'Google 서버가 잠시 불안정해요. 조금 뒤 다시 시도해 주세요.';
   if (e.code === 'BLOCKED' || /safety|blocked|prohibited|policy|recognizable/i.test(m)) return '안전 정책 때문에 만들어지지 않았어요. 장면·의상·대사 표현을 바꿔 다시 시도해 보세요.';
+  if (e.code === 'GEN_FAILED') return '구글이 이유를 알려주지 않고 생성을 멈췄어요. 보통 안전 필터나 일시적인 문제예요. 다시 시도하거나 대사·장면을 바꿔 보세요.';
   if (e.status === 400) return '요청이 거절됐어요: ' + m.slice(0, 160);
   return m.slice(0, 220);
 }
@@ -1111,7 +1657,7 @@ const Viewer = {
         ${this.idx > 0 ? `<button class="v-nav l" data-act="vPrev" aria-label="이전">${icon('chevL')}</button>` : ''}
         ${this.idx < this.list.length - 1 ? `<button class="v-nav r" data-act="vNext" aria-label="다음">${icon('chevR')}</button>` : ''}
       </div>
-      <div class="v-info ${this.info ? '' : 'hide'}"><b>${esc(m.label || (isImg ? '사진' : '영상'))}</b> · ${fmtDate(m.createdAt)}${isRef ? ' · ★ 기준 사진' : ''}${m.prompt ? `<small>${esc(m.prompt)}</small>` : ''}</div>
+      <div class="v-info ${this.info ? '' : 'hide'}"><b>${esc(m.label || (isImg ? '사진' : '영상'))}</b> · ${fmtDate(m.createdAt)}${isRef ? ' · ★ 기준 사진' : ''}${typeof m.usd === 'number' && typeof fmtUsd === 'function' ? ` · 비용 ${fmtUsd(m.usd)} (${fmtKrw(m.usd)})${m.est ? ' · 추정' : ''}` : ''}${m.prompt ? `<small>${esc(m.prompt)}</small>` : ''}</div>
       <div class="v-actions">
         <button data-act="vSave" ${this.blob ? '' : 'disabled'}>${icon('download')}<span>저장</span></button>
         <button data-act="vShare" ${this.blob ? '' : 'disabled'}>${icon('share')}<span>공유</span></button>
@@ -1145,13 +1691,14 @@ const chipsSel = (path, opts, cur) => `<div class="chips">${opts.map(([v, l]) =>
 const bottomBar = (inner, note = '') => `<div class="bottom-bar"><div class="in">${inner}</div>${note ? `<p class="bb-note">${note}</p>` : ''}</div>`;
 
 function vHome() {
-  const key = getKey();
+  const key = getKey(), tot = Costs.totals();
   const running = new Set(S.jobs.filter(j => j.status === 'running' || j.status === 'starting').map(j => j.charId));
   return `
   <header class="topbar">
     <div class="brand"><span class="logo">MUSE</span><span class="brand-sub">내 취향 가상인물 스튜디오</span></div>
     <button class="icon-btn" data-act="go" data-view="settings" aria-label="설정">${icon('gear')}</button>
   </header>
+  ${tot.all > 0 ? `<button class="cost-chip" data-act="go" data-view="costs"><span>비용</span><small>이번 주</small><b>${fmtUsd(tot.week)}</b><small>이번 달</small><b>${fmtUsd(tot.month)}</b>${icon('chevR')}</button>` : ''}
   ${key ? '' : `<section class="card key-card"><div class="key-glow"></div>
     <b>먼저 Gemini API 키를 연결해 주세요</b>
     <p class="sub">사진·영상은 Google Gemini가 만들어요. 키는 이 폰에만 저장돼요.</p>
@@ -1237,6 +1784,7 @@ function vCreate2() {
     <span class="tag">${icon('sparkle')} 당신의 취향</span>
     <p class="summary">${esc(p.summary || '공통된 취향을 찾았어요.')}</p>
     <div class="chips">${p.keywords.map(k => `<span class="chip static">#${esc(k)}</span>`).join('')}</div>
+    ${(p.points || []).length ? `<p class="sub" style="margin:14px 0 8px">이 특징을 닮게 만들어요</p><div class="chips">${p.points.map(k => `<span class="chip static on">${esc(k)}</span>`).join('')}</div>` : ''}
   </section>
   <section class="card">
     <span class="tag">새로 태어날 인물</span>
@@ -1255,8 +1803,10 @@ function vCreate2() {
 function vCreate3() {
   const c = S.create, p = c.profile;
   const busy = c.busy === 'cands';
+  const scores = c.cands.filter(x => x.status === 'done' && x.score != null).map(x => x.score);
+  const top = scores.length ? Math.max(...scores) : null;
   const tiles = c.cands.map((cd, i) => {
-    if (cd.status === 'done') return `<button class="cand ${c.sel === i ? 'sel' : ''}" data-act="selCand" data-i="${i}"><img src="${cd.url}" alt="후보 ${i + 1}">${c.sel === i ? `<span class="ck">${icon('check')}</span>` : ''}</button>`;
+    if (cd.status === 'done') return `<button class="cand ${c.sel === i ? 'sel' : ''}" data-act="selCand" data-i="${i}"><img src="${cd.url}" alt="후보 ${i + 1}">${c.sel === i ? `<span class="ck">${icon('check')}</span>` : ''}${cd.score != null ? `<span class="match ${cd.score === top ? 'top' : ''}">취향 ${cd.score}%</span>` : ''}</button>`;
     if (cd.status === 'error') return `<div class="cand err"><div class="state">${icon('info')}<span>${esc(friendlyError(cd.error).slice(0, 90))}</span><button class="mini" data-act="retryCand" data-i="${i}">다시 시도</button></div></div>`;
     return '<div class="cand shimmer"><div class="state"><div class="spinner"></div><span>얼굴 그리는 중</span></div></div>';
   }).join('');
@@ -1266,6 +1816,9 @@ function vCreate3() {
     <h3 class="card-title">마음에 드는 얼굴을 골라 주세요</h3>
     <p class="sub">${hasSel ? `고른 얼굴이 <b>${esc(p.name)}</b>의 기준 얼굴이 돼요.` : '탭해서 고르세요. 다시 만들어도 고른 얼굴은 남겨둬요.'}</p>
     <div class="cand-grid">${tiles}</div>
+    ${c.scoring ? '<p class="hint"><span class="spinner sm"></span> 고른 사진들과 취향 일치도 계산 중…</p>'
+      : hasSel && c.cands[c.sel].score != null ? `<p class="hint">닮은 점: ${esc(c.cands[c.sel].best || '-')} · 다른 점: ${esc(c.cands[c.sel].diff || '-')}</p>`
+      : top != null ? '<p class="hint">취향 %는 고른 사진들의 공통 얼굴 특징을 얼마나 살렸는지예요.</p>' : ''}
   </section>
   <section class="card">
     <h3 class="card-title">살짝 바꿔볼까요? <span class="opt">선택</span></h3>
@@ -1274,13 +1827,15 @@ function vCreate3() {
     <button class="btn btn-ghost full" style="margin-top:10px" data-act="genCands" data-mode="tweak" ${busy ? 'disabled' : ''}>${icon('wand')} ${hasSel ? '고른 얼굴 기준으로 3장 수정' : '이 느낌으로 새로 4장'}</button>
     <button class="text-btn small" data-act="createStep" data-step="2">← 분석 결과로</button>
   </section>
-  ${bottomBar(`<button class="btn btn-ghost" data-act="genCands" data-mode="fresh" ${busy ? 'disabled' : ''}>${icon('refresh')} 다시</button><button class="btn btn-primary" data-act="saveChar" ${hasSel ? '' : 'disabled'}>${icon('check')} 이 얼굴로 저장</button>`, `얼굴 1장 약 ${usd(COST.img['1K'])}`)}`;
+  ${bottomBar(`<button class="btn btn-ghost" data-act="genCands" data-mode="fresh" ${busy ? 'disabled' : ''}>${icon('refresh')} 다시</button><button class="btn btn-primary" data-act="saveChar" ${hasSel ? '' : 'disabled'}>${icon('check')} 이 얼굴로 저장</button>`, `얼굴 1장 약 ${usd(COST.img['1K'])} · 저장하면 각도·전신 기준 사진 ${REF_SHOTS.length}장을 자동으로 만들어요 (약 ${usd(COST.img['1K'] * REF_SHOTS.length)})`)}`;
 }
 
 function vChar() {
   const ch = curChar();
   if (!ch) return `<header class="topbar"><button class="icon-btn" data-act="back">${icon('back')}</button><h1>인물</h1></header><div class="empty"><p>인물을 찾을 수 없어요.</p></div>`;
   const refs = ch.refIds.map(id => S.media.find(m => m.id === id)).filter(Boolean);
+  const rj = S.refJob && S.refJob.charId === ch.id ? S.refJob : null;
+  const need = rj ? [] : missingRefShots(ch);
   return `
   <header class="topbar">
     <button class="icon-btn" data-act="back" aria-label="뒤로">${icon('back')}</button>
@@ -1297,7 +1852,8 @@ function vChar() {
   </section>
   <section class="refs">
     <div class="refs-head">${icon('star')}<b>기준 사진 ${refs.length}/${MAX_REFS}</b><small>얼굴을 똑같이 맞출 때 써요</small></div>
-    <div class="refs-row">${refs.map(r => `<button data-act="openMedia" data-id="${r.id}" data-list="refs"><img src="${r.thumb}" alt=""></button>`).join('')}${refs.length < MAX_REFS ? `<button class="ref-add" data-act="refHelp" aria-label="기준 사진 추가 방법">${icon('plus')}</button>` : ''}</div>
+    <div class="refs-row">${refs.map(r => `<button data-act="openMedia" data-id="${r.id}" data-list="refs"><img src="${r.thumb}" alt=""></button>`).join('')}${rj ? Array.from({ length: rj.total - rj.done }, () => '<span class="ref-wait"><span class="spinner sm"></span></span>').join('') : ''}${!rj && refs.length < MAX_REFS ? `<button class="ref-add" data-act="refHelp" aria-label="기준 사진 추가 방법">${icon('plus')}</button>` : ''}</div>
+    ${rj ? `<p class="hint">각도·전신 기준 사진 만드는 중 · ${rj.done}/${rj.total}</p>` : need.length ? `<button class="ref-make" data-act="makeRefSet">${icon('sparkle')} 각도·전신 기준 사진 만들기 <small>${need.map(x => x.ko).join('·')} · 약 ${usd((COST.img[LS.get('imgSize', '1K')] || COST.img['1K']) * need.length)}</small></button>` : ''}
   </section>
   <nav class="tabs">
     <button class="${S.tab === 'photo' ? 'on' : ''}" data-act="tab" data-tab="photo">${icon('image')}사진</button>
@@ -1331,8 +1887,11 @@ function vPhotoTab(ch) {
   ${bottomBar(`<button class="btn btn-primary" data-act="genPhotos" ${S.busy ? 'disabled' : ''}>${S.busy ? '<span class="spinner sm"></span> 만드는 중…' : `${icon('sparkle')} 사진 ${f.count}장 만들기`}</button>`, `약 ${usd((COST.img[size] || COST.img['1K']) * f.count)} · ${size} · 세로(9:16) 사진은 영상 만들 때 딱 맞아요`)}`;
 }
 function jobCard(j) {
-  if (j.status === 'failed') return `<div class="job fail">${j.thumb ? `<img src="${j.thumb}" alt="">` : ''}<div class="jt"><b>${esc(j.label)} · 실패</b><p>${esc(j.error || '')}</p><div class="acts"><button class="mini" data-act="retryJob" data-id="${j.id}">다시 시도</button><button class="mini" data-act="dismissJob" data-id="${j.id}">지우기</button>${j.errorRaw ? `<button class="mini" data-act="jobDetail" data-id="${j.id}">자세히</button>` : ''}</div></div></div>`;
-  return `<div class="job">${j.thumb ? `<img src="${j.thumb}" alt="">` : ''}<div class="jt"><b>${esc(j.label)}</b><p><span class="dot"></span>${j.status === 'starting' ? '요청 보내는 중' : '영상 만드는 중'} · <span data-since="${j.createdAt}">0초</span></p><p class="mini-hint">완성되면 갤러리에 자동 저장돼요</p></div><div class="spinner"></div></div>`;
+  const img = j.thumb ? `<img src="${j.thumb}" alt="">` : '';
+  if (j.status === 'failed') return `<div class="job fail">${img}<div class="jt"><b>${esc(j.label)} · 실패</b><p>${esc(j.error || '')}</p><div class="acts"><button class="mini" data-act="retryJob" data-id="${j.id}">다시 시도</button>${j.hasLine && j.silentPrompt ? `<button class="mini" data-act="retryNoLine" data-id="${j.id}">대사 빼고 다시</button>` : ''}<button class="mini" data-act="dismissJob" data-id="${j.id}">지우기</button>${j.errorRaw ? `<button class="mini" data-act="jobDetail" data-id="${j.id}">자세히</button>` : ''}</div></div></div>`;
+  const what = j.step === 'open' ? '2단계 ① 첫 장면 만드는 중' : j.step === 'speak' ? '2단계 ② 이어서 대사 넣는 중' : (j.status === 'starting' ? '요청 보내는 중' : '영상 만드는 중');
+  const hint = j.viaChain ? '한 번에 만들기가 거절돼서 다른 방법으로 만들고 있어요' : '완성되면 갤러리에 자동 저장돼요';
+  return `<div class="job">${img}<div class="jt"><b>${esc(j.label)}</b><p><span class="dot"></span>${what} · <span data-since="${j.createdAt}">0초</span></p><p class="mini-hint">${hint}</p></div><div class="spinner"></div></div>`;
 }
 function vVideoTab(ch) {
   const f = S.videoForm;
@@ -1368,7 +1927,7 @@ function vVideoTab(ch) {
     <textarea class="input" rows="2" data-bind="videoForm.line" maxlength="80" placeholder="예: 오늘 하루도 수고했어! 내일 또 보자.">${esc(f.line)}</textarea>
     <div class="field"><label>언어</label>${seg('videoForm.lang', LANGS, f.lang)}</div>
     <div class="field"><label>말투</label>${chipsSel('videoForm.tone', opt(TONES), f.tone)}</div>
-    <p class="hint">한두 문장이 적당해요. 한국어 대사는 발음이나 입모양이 어색할 수 있어요. 영어가 가장 자연스러워요.</p>
+    <p class="hint">한두 문장이 적당해요. 영어가 가장 자연스럽고, 한국어는 발음·입모양이 어색할 수 있어요.<br>구글이 대사 영상을 거절하면 ‘짧은 첫 장면(3초) → 이어서 대사’ 2단계로 자동으로 다시 만들어요 (시간·비용이 조금 더 들어요).</p>
   </section>
   <section class="card">
     <h3 class="card-title">연출</h3>
@@ -1409,9 +1968,89 @@ function vGalleryTab(ch) {
   <p class="hint center">사진을 열어 <b>저장·공유</b>하거나, <b>★ 기준 지정</b>으로 얼굴 일관성을 높일 수 있어요.</p>`;
 }
 
+// 비용 화면: 이번 달(큰 숫자) · 이번 주 · 올해 · 누적 · 마지막 작업 · 주별 · 월별 · 연도별 · 최근 내역
+const costOpen = new Set();
+const md = d => `${d.getMonth() + 1}/${d.getDate()}`;
+
+function costKinds(by, sep = ' · ') {
+  const units = { image: '장', video: '개', analysis: '회' };
+  return ['image', 'video', 'analysis', 'legacy'].filter(k => by && by[k] && (by[k].usd > 0 || by[k].n > 0))
+    .map(k => `${KIND_E[k]} ${KIND_KO[k]}${by[k].n ? ` ${by[k].n}${units[k] || ''}` : ''} ${fmtUsd(by[k].usd)}`).join(sep);
+}
+function barRows(rows, act) {
+  // rows: [{ key, name, sub, usd, by, est }] · 2줄 이상일 때만 막대를 그려요 (한 줄짜리 막대 그래프는 의미가 없어서)
+  const max = Math.max(...rows.map(r => r.usd), 0), bars = rows.length > 1 && max > 0;
+  return `<div class="bar-list">${rows.map(r => {
+    const open = costOpen.has(act + r.key);
+    return `<button class="bar-row ${open ? 'open' : ''}" data-act="costRow" data-k="${esc(act + r.key)}" aria-expanded="${open}">
+      <span class="br-name">${esc(r.name)}${r.sub ? `<small>${esc(r.sub)}</small>` : ''}</span>
+      ${bars ? `<span class="br-track"><i style="width:${Math.max(2, Math.round((r.usd / max) * 100))}%"></i></span>` : '<span class="br-track none"></span>'}
+      <b class="br-val">${fmtUsd(r.usd)}</b>
+    </button>
+    ${open ? `<div class="br-detail">${costKinds(r.by, '<br>') || '내역 없음'}<br><span>${fmtKrw(r.usd)}${r.est > 0 ? ` · 그중 추정 ${fmtUsd(r.est)}` : ''}</span></div>` : ''}`;
+  }).join('')}</div>`;
+}
+function vCosts() {
+  const a = Costs.agg(), tot = Costs.totals(), fx = fxInfo();
+  const months = Object.keys(a.m).sort().reverse();
+  const curM = a.m[tot.cm] || { usd: 0, est: 0, by: {} };
+  const years = {};
+  for (const k of months) {
+    const y = k.slice(0, 4), m = a.m[k], Y = years[y] || (years[y] = { usd: 0, est: 0, by: {} });
+    Y.usd += m.usd || 0; Y.est += m.est || 0;
+    for (const [kk, b] of Object.entries(m.by || {})) { const t = Y.by[kk] || (Y.by[kk] = { usd: 0, n: 0 }); t.usd += b.usd || 0; t.n += b.n || 0; }
+  }
+  const ops = Costs.ops(40), last = ops[0];
+  const weeks = Costs.weeks(8).filter(w => w.usd > 0 || w.i === 0 && tot.all > 0);
+  const chName = id => { const c = S.chars.find(x => x.id === id); return c ? c.name : ''; };
+  const opRow = o => `<li><span class="op-e">${KIND_E[o.k] || '🧾'}</span><span class="op-t"><b>${esc(o.lb)}</b><small>${[chName(o.ch), fmtDate(o.t)].filter(Boolean).map(esc).join(' · ')}</small></span><span class="op-v"><b>${fmtUsd(o.usd)}</b><small>${fmtKrw(o.usd)}${o.est ? ' · 추정' : ''}</small></span></li>`;
+  const [cy, cmo] = tot.cm.split('-');
+  return `
+  <header class="topbar"><button class="icon-btn" data-act="back" aria-label="뒤로">${icon('back')}</button><h1>비용</h1></header>
+  <section class="card cost-hero">
+    <span class="ch-label">이번 달 · ${cy}년 ${Number(cmo)}월</span>
+    <b class="ch-value">${fmtUsd(curM.usd)}</b>
+    <span class="ch-sub">${fmtKrw(curM.usd)}${curM.est > 0 ? ` · 그중 추정 ${fmtUsd(curM.est)}` : ''}</span>
+    ${costKinds(curM.by) ? `<p class="ch-kinds">${costKinds(curM.by)}</p>` : ''}
+  </section>
+  <div class="tile-row three">
+    <div class="tile"><span>이번 주</span><b>${fmtUsd(tot.week)}</b><small>${fmtKrw(tot.week)}</small><em>${md(tot.ws)}~${md(tot.we)}</em></div>
+    <div class="tile"><span>올해</span><b>${fmtUsd(tot.year)}</b><small>${fmtKrw(tot.year)}</small><em>${tot.cy}년</em></div>
+    <div class="tile"><span>누적</span><b>${fmtUsd(tot.all)}</b><small>${fmtKrw(tot.all)}</small><em>전체 기간</em></div>
+  </div>
+  ${last ? `<section class="card">
+    <h3 class="card-title">이번 비용 <span class="opt">마지막 작업</span></h3>
+    <ul class="op-list">${opRow(last)}</ul>
+  </section>` : `<section class="card"><div class="empty"><div class="big">🧾</div><p>아직 비용 기록이 없어요.<br>사진이나 영상을 만들면 여기에 쌓여요.</p></div></section>`}
+  ${weeks.length ? `<section class="card">
+    <h3 class="card-title">주별 <span class="opt">월~일 · 최근 8주</span></h3>
+    ${barRows(weeks.map(w => ({ key: w.key, name: w.i === 0 ? '이번 주' : w.i === 1 ? '지난 주' : `${w.i}주 전`, sub: `${md(w.s)}~${md(w.e)}`, usd: w.usd, est: w.est, by: w.by })), 'w')}
+  </section>` : ''}
+  ${months.length ? `<section class="card">
+    <h3 class="card-title">월별</h3>
+    ${barRows(months.map(k => ({ key: k, name: `${Number(k.slice(5))}월`, sub: k.slice(0, 4), usd: a.m[k].usd || 0, est: a.m[k].est || 0, by: a.m[k].by })), 'm')}
+    <p class="hint">줄을 누르면 사진·영상·분석으로 나눠 보여 줘요.</p>
+  </section>
+  <section class="card">
+    <h3 class="card-title">연도별</h3>
+    ${barRows(Object.keys(years).sort().reverse().map(y => ({ key: y, name: `${y}년`, usd: years[y].usd, est: years[y].est, by: years[y].by })), 'y')}
+  </section>` : ''}
+  ${ops.length > 1 ? `<section class="card">
+    <h3 class="card-title">최근 내역 <span class="opt">최근 ${ops.length}건</span></h3>
+    <ul class="op-list">${ops.map(opRow).join('')}</ul>
+  </section>` : ''}
+  <section class="card">
+    <h3 class="card-title">계산 방식</h3>
+    <p class="sub">구글이 응답마다 알려 주는 실제 사용량(토큰)에 구글 가격표를 곱해서 계산해요. 사용량이 안 온 경우만 ‘추정’으로 표시해요. 실패한 요청은 넣지 않았어요.</p>
+    <p class="sub">최종 청구 금액은 구글 AI Studio에서 확인할 수 있어요. 이 기록은 이 기기에만 저장돼요.</p>
+    <a class="btn btn-ghost full" href="https://aistudio.google.com/usage" target="_blank" rel="noopener">구글 AI Studio 사용량 열기 ↗</a>
+    <div class="usage"><span>환율 1달러 = ${Math.round(fx.rate).toLocaleString('ko-KR')}원 ${fx.def ? '(기본값)' : fx.date ? `(${esc(fx.date)} 기준)` : ''}</span><button class="text-btn" data-act="refreshFx">새로고침</button></div>
+    ${tot.all > 0 ? '<button class="text-btn small" data-act="resetCosts">비용 기록 지우기</button>' : ''}
+  </section>`;
+}
+
 function vSettings() {
-  const key = getKey(), m = getModels();
-  const u = LS.get('usage', { images: 0, videos: 0, analyses: 0, cost: 0 });
+  const key = getKey(), m = getModels(), tot = Costs.totals();
   const size = LS.get('imgSize', '1K');
   return `
   <header class="topbar"><button class="icon-btn" data-act="back" aria-label="뒤로">${icon('back')}</button><h1>설정</h1></header>
@@ -1431,15 +2070,15 @@ function vSettings() {
     </details>
   </section>
   <section class="card">
-    <h3 class="card-title">예상 비용 <span class="opt">Google 청구</span></h3>
+    <h3 class="card-title">비용 <span class="opt">Google 청구</span></h3>
+    <div class="usage"><span>이번 주 <b>${fmtUsd(tot.week)}</b> · 이번 달 <b>${fmtUsd(tot.month)}</b> · 누적 ${fmtUsd(tot.all)}</span><button class="text-btn" data-act="go" data-view="costs">자세히 ›</button></div>
     <ul class="cost-list">
       <li><span>사진 1장 (1K)</span><b>약 ${usd(COST.img['1K'])}</b></li>
       <li><span>사진 1장 (2K)</span><b>약 ${usd(COST.img['2K'])}</b></li>
       <li><span>영상 1개 (720p · 약 8초)</span><b>약 ${usd(COST.vidSec['720p'] * COST.vidLen)}</b></li>
-      <li><span>취향 분석 1회</span><b>거의 0</b></li>
+      <li><span>취향 분석 1회</span><b>약 $0.01</b></li>
     </ul>
-    <div class="usage"><span>이 기기 누적: 사진 ${u.images || 0}장 · 영상 ${u.videos || 0}개 · 약 ${usd(u.cost)}</span><button class="text-btn" data-act="resetUsage">초기화</button></div>
-    <p class="hint">추정치예요. 정확한 금액은 Google AI Studio 사용량 화면에서 확인하세요.</p>
+    <p class="hint">위 단가는 예상치예요. 실제로 쓴 비용은 ‘자세히’에서 이번·주별·월별·연도별로 볼 수 있어요.</p>
   </section>
   <section class="card">
     <h3 class="card-title">사진 품질</h3>
@@ -1483,6 +2122,7 @@ function render() {
   if (S.view === 'create') html = vCreate();
   else if (S.view === 'char') html = vChar();
   else if (S.view === 'settings') html = vSettings();
+  else if (S.view === 'costs') html = vCosts();
   else html = vHome();
   app.innerHTML = `<div class="wrap">${html}</div>`;
   if (focusPath) {
@@ -1520,6 +2160,7 @@ async function enterView(scrollTop) {
   try {
     if (S.view === 'home') await loadChars();
     else if (S.view === 'char') { if (!S.chars.length) await loadChars(); await loadCharMedia(); }
+    else if (S.view === 'costs') { if (!S.chars.length) await loadChars(); refreshFx(false).then(ok => { if (ok && S.view === 'costs') renderSoon(); }); }
   } catch (e) { console.error(e); }
   render();
   if (scrollTop) window.scrollTo(0, 0);
@@ -1533,6 +2174,39 @@ window.addEventListener('popstate', e => {
 });
 
 /* ================= 동작 ================= */
+// 고른 얼굴을 보고 각도·전신 기준 사진을 만들어 기준 사진에 추가
+async function makeRefSet(charId) {
+  if (S.refJob) return;
+  const ch0 = S.chars.find(c => c.id === charId); if (!ch0) return;
+  const shots = missingRefShots(ch0);
+  if (!shots.length) return;
+  S.refJob = { charId, total: shots.length, done: 0, startedAt: Date.now() };
+  renderSoon(); updateWakeLock();
+  await ensureFace(charId);
+  const ch = S.chars.find(c => c.id === charId) || ch0;
+  let refs;
+  try { refs = await loadRefs(ch); } catch (e) { S.refJob = null; updateWakeLock(); render(); return showError(e); }
+  const size = LS.get('imgSize', '1K');
+  const op = newOp(`기준 사진 ${shots.length}장 (각도·전신)`, charId);
+  const results = await Promise.allSettled(shots.map(async shot => {
+    const prompt = refSetPrompt(ch, shot);
+    const blob = await generateImage({ refs, prompt, ratio: shot.ratio, size, op });
+    const thumb = await makeThumb(blob);
+    const m = await saveMediaRec({ charId, kind: 'image', blob, thumb, label: refLabel(shot), prompt, ratio: shot.ratio, extra: blob.usd != null ? { usd: blob.usd, est: !!blob.est } : null });
+    if (S.recent[charId]) S.recent[charId] = S.recent[charId].filter(x => x !== m.id); // '방금 완성된 사진'에는 안 보이게 (기준 사진 줄에 보임)
+    const cur = S.chars.find(c => c.id === charId) || ch;
+    if (cur.refIds.length < MAX_REFS) { cur.refIds = [...cur.refIds, m.id]; cur.updatedAt = Date.now(); await DB.put('chars', cur); }
+    if (S.charId === charId) S.media.unshift(m);
+    if (S.refJob) S.refJob.done++;
+    renderSoon();
+  }));
+  S.refJob = null; updateWakeLock(); render();
+  const fails = results.filter(r => r.status === 'rejected');
+  if (fails.length === shots.length) showError(fails[0].reason, '기준 사진 만들기 실패');
+  else if (fails.length) toast(`기준 사진 ${shots.length - fails.length}장 완성, ${fails.length}장 실패 · ${costLine(Costs.opSum(op.id))}`, 3500);
+  else toast(`각도·전신 기준 사진이 준비됐어요 ★ · ${costLine(Costs.opSum(op.id))}`, 3500);
+}
+
 const ACT = {
   go: el => go(el.dataset.view),
   back: () => { if (((history.state && history.state.d) || 0) > 0) history.back(); else go('home', {}, { replace: true }); },
@@ -1555,7 +2229,7 @@ const ACT = {
     c.busy = 'analyze'; c.busyAt = Date.now(); render(); window.scrollTo(0, 0); updateWakeLock();
     try {
       const prof = await analyzePhotos(c.photos, c.prefs);
-      c.profile = prof; c.step = 2; addUsage('analyses', 0.001);
+      c.profile = prof; c.step = 2;
     } catch (e) { c.step = c.profile ? 2 : 1; c.busy = null; render(); showError(e, '취향 분석 실패'); }
     finally { c.busy = null; render(); updateWakeLock(); }
   },
@@ -1577,17 +2251,20 @@ const ACT = {
     for (let i = 0; i < nNew; i++) c.cands.push({ status: 'loading', args: { tweak, baseB64 } });
     if (mode === 'tweak') { c.tweaks = []; c.tweakText = ''; }
     c.step = 3; c.busy = 'cands'; render(); window.scrollTo(0, 0); updateWakeLock();
-    await Promise.allSettled(c.cands.map((cd, i) => cd.status === 'loading' ? runCand(cd, i) : null));
+    const op = newOp(mode === 'tweak' ? `얼굴 후보 ${nNew}장 (수정)` : `얼굴 후보 ${nNew}장`);
+    await Promise.allSettled(c.cands.map((cd, i) => cd.status === 'loading' ? runCand(cd, i, op) : null));
     if (S.create !== c) return;
     c.busy = null; render(); updateWakeLock();
     const fresh = c.cands.filter(x => x !== keep);
     if (fresh.length && fresh.every(x => x.status === 'error')) showError(fresh[0].error, '얼굴 생성 실패');
+    else scoreCandidates();
   },
   retryCand: async el => {
     const c = S.create, i = Number(el.dataset.i), cd = c.cands[i];
     if (!cd) return;
-    await runCand(cd, i);
+    await runCand(cd, i, newOp('얼굴 후보 1장 (다시)'));
     render();
+    if (cd.status === 'done') scoreCandidates();
   },
   selCand: el => { const c = S.create, i = Number(el.dataset.i); c.sel = c.sel === i ? -1 : i; render(); },
   toggleTweak: el => { const c = S.create, v = el.dataset.val; c.tweaks = c.tweaks.includes(v) ? c.tweaks.filter(x => x !== v) : [...c.tweaks, v]; render(); },
@@ -1599,15 +2276,16 @@ const ACT = {
     try {
       const charId = uid();
       const thumb = await makeThumb(cd.blob);
-      const m = await saveMediaRec({ charId, kind: 'image', blob: cd.blob, thumb, label: '기준 얼굴', prompt: cd.prompt || '', ratio: '3:4' });
-      const ch = { id: charId, name, gender: p.gender, age: p.age, keywords: p.keywords, summary: p.summary, persona: p.persona, appearance: p.appearance, style: p.style, vibe: p.vibe, refIds: [m.id], coverId: m.id, coverThumb: thumb, createdAt: Date.now(), updatedAt: Date.now() };
+      const m = await saveMediaRec({ charId, kind: 'image', blob: cd.blob, thumb, label: '기준 얼굴', prompt: cd.prompt || '', ratio: '3:4', extra: cd.blob.usd != null ? { usd: cd.blob.usd, est: !!cd.blob.est } : null });
+      const ch = { id: charId, name, gender: p.gender, age: p.age, keywords: p.keywords, summary: p.summary, persona: p.persona, appearance: p.appearance, style: p.style, vibe: p.vibe, points: p.points || [], features: p.features || [], refIds: [m.id], coverId: m.id, coverThumb: thumb, createdAt: Date.now(), updatedAt: Date.now() };
       await DB.put('chars', ch);
       try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch {}
       resetCreate();
       S.recent[charId] = [];
       await loadChars();
       go('char', { charId, tab: 'photo', galFilter: 'all' }, { replace: true });
-      toast(`${jo(name, '이', '가')} 태어났어요! 이제 사진·영상을 만들어 보세요 ✨`, 3500);
+      toast(`${jo(name, '이', '가')} 태어났어요! 각도·전신 기준 사진을 만들고 있어요 ✨`, 3500);
+      makeRefSet(charId);
     } catch (e) { el.disabled = false; showError(e, '저장 실패'); }
   },
 
@@ -1627,11 +2305,12 @@ const ACT = {
       const intro = `${ch.summary ? `<p>${esc(ch.summary)}</p>` : ''}${(ch.keywords || []).length ? `<div class="chips" style="margin-bottom:6px">${ch.keywords.map(k => `<span class="chip static">#${esc(k)}</span>`).join('')}</div>` : ''}`;
       const v = await formSheet(`${ch.name} 설정`, [
         { key: 'persona', label: '소개', value: ch.persona || '', rows: 2 },
+        { key: 'face', label: '얼굴 특징 (영어 · 기준 얼굴 자동 분석 · 사진·영상에 사용)', value: ch.face || '', rows: 5 },
         { key: 'appearance', label: '외모 설명 (영어 · 생성에 사용)', value: ch.appearance || '', rows: 6 },
         { key: 'style', label: '기본 스타일 (영어)', value: ch.style || '', rows: 2 },
         { key: 'vibe', label: '분위기 (영어)', value: ch.vibe || '', rows: 2 },
       ], intro);
-      if (v && typeof v === 'object') { Object.assign(ch, { persona: v.persona.trim(), appearance: v.appearance.trim(), style: v.style.trim(), vibe: v.vibe.trim(), updatedAt: Date.now() }); await DB.put('chars', ch); render(); toast('저장했어요'); }
+      if (v && typeof v === 'object') { Object.assign(ch, { persona: v.persona.trim(), face: v.face.trim(), appearance: v.appearance.trim(), style: v.style.trim(), vibe: v.vibe.trim(), updatedAt: Date.now() }); await DB.put('chars', ch); render(); toast('저장했어요'); }
     } else if (a === 'backup') {
       toast('백업 파일 만드는 중…');
       const { blob, name } = await buildBackup({ charIds: [ch.id], withVideos: true, label: ch.name });
@@ -1647,7 +2326,8 @@ const ACT = {
       go('home', { charId: null }, { replace: true });
     }
   },
-  refHelp: () => Sheet.show(`<h3>★ 기준 사진이란?</h3><p>사진·영상을 만들 때 이 사진들을 보고 얼굴을 똑같이 맞춰요.\n갤러리에서 잘 나온 사진(전신, 옆모습 등)을 열고 ‘기준 지정’을 누르면 최대 ${MAX_REFS}장까지 추가돼요. 각도가 다양할수록 얼굴이 더 일정하게 나와요.</p><button class="btn btn-primary full" data-sheet-val="">알겠어요</button>`),
+  refHelp: () => Sheet.show(`<h3>★ 기준 사진이란?</h3><p>사진·영상을 만들 때 이 사진들을 보고 얼굴을 똑같이 맞춰요. 각도가 다양할수록 얼굴이 더 일정하게 나와요.\n‘각도·전신 기준 사진 만들기’를 누르면 3/4 각도·전신·옆모습을 자동으로 만들어 추가해요. 갤러리에서 마음에 드는 사진을 열고 ‘기준 지정’을 눌러도 최대 ${MAX_REFS}장까지 추가돼요.</p><button class="btn btn-primary full" data-sheet-val="">알겠어요</button>`),
+  makeRefSet: () => { const ch = curChar(); if (!ch) return; if (!getKey()) return needKey(); makeRefSet(ch.id); },
   genPhotos: async () => {
     const ch = curChar(); if (!ch || S.busy) return;
     if (!getKey()) return needKey();
@@ -1660,14 +2340,15 @@ const ACT = {
     const n = Number(f.count) || 1, size = LS.get('imgSize', '1K'), ratio = f.ratio;
     S.busy = { kind: 'photo', charId: ch.id, total: n, done: 0, startedAt: Date.now() };
     render(); window.scrollTo({ top: 0, behavior: 'smooth' }); updateWakeLock();
+    await ensureFace(ch.id);
     let refs;
     try { refs = await loadRefs(ch); } catch (e) { S.busy = null; render(); updateWakeLock(); return showError(e); }
     const prompt = scenePrompt(ch, { scene, shot, outfit: f.outfit.trim(), ratio });
+    const op = newOp(`사진 ${n}장 · ${label}`, ch.id);
     const results = await Promise.allSettled(Array.from({ length: n }, async () => {
-      const blob = await generateImage({ refs, prompt, ratio, size });
+      const blob = await generateImage({ refs, prompt, ratio, size, op });
       const thumb = await makeThumb(blob);
-      const m = await saveMediaRec({ charId: ch.id, kind: 'image', blob, thumb, label, prompt, ratio });
-      addUsage('images', COST.img[size] || COST.img['1K']);
+      const m = await saveMediaRec({ charId: ch.id, kind: 'image', blob, thumb, label, prompt, ratio, extra: blob.usd != null ? { usd: blob.usd, est: !!blob.est } : null });
       if (S.charId === ch.id) S.media.unshift(m);
       if (S.busy) S.busy.done++;
       renderSoon();
@@ -1676,13 +2357,15 @@ const ACT = {
     ch.updatedAt = Date.now(); DB.put('chars', ch).catch(() => {});
     render();
     const fails = results.filter(r => r.status === 'rejected');
+    const spent = costLine(Costs.opSum(op.id));
     if (fails.length === n) showError(fails[0].reason, '사진 생성 실패');
-    else if (fails.length) toast(`${n - fails.length}장 완성, ${fails.length}장 실패`, 3500);
-    else toast(n > 1 ? `사진 ${n}장 완성! 📸` : '사진 완성! 📸');
+    else if (fails.length) toast(`${n - fails.length}장 완성, ${fails.length}장 실패 · ${spent}`, 3500);
+    else toast(`${n > 1 ? `사진 ${n}장 완성! 📸` : '사진 완성! 📸'} · ${spent}`, 3200);
   },
-  genVideo: () => {
+  genVideo: async () => {
     const ch = curChar(); if (!ch) return;
     if (!getKey()) return needKey();
+    if (!ch.face) { toast('얼굴 특징을 먼저 분석하고 있어요…', 2500); await ensureFace(ch.id); }
     const f = S.videoForm;
     const scene = f.src === 'scene';
     let src = null;
@@ -1703,18 +2386,29 @@ const ACT = {
     const label = (scene ? `${sc.e} ${f.scene === 'custom' ? String(f.sceneCustom).trim().slice(0, 12) : sc.ko} · ` : '')
       + (f.motion === 'custom' ? String(f.custom).trim().slice(0, 16) : `${mo.e} ${mo.ko}`) + (line ? ' · 대사' : '');
     const refThumb = scene ? (S.media.find(m => m.id === ch.refIds[0]) || {}).thumb : null;
+    // 대사가 있으면: 거절될 때 쓸 2단계(첫 장면 → 이어서 대사)와 '대사 빼고 다시'용 문장도 같이 준비
+    const lineSet = line ? { hasLine: true, silentPrompt: videoPrompt(ch, { ...f, line: '' }), openPrompt: openingPrompt(ch, f), speakPrompt: speakPrompt(ch, f) } : { hasLine: false };
     startVideo({ charId: ch.id, mode: scene ? 'scene' : 'photo', sourceId: scene ? ch.refIds[0] : src.id, refIds: scene ? ch.refIds.slice(0, MAX_REFS) : null,
-      prompt, label, ratio: f.ratio, res: f.res, secs: f.secs, thumb: scene ? (refThumb || null) : src.thumb });
+      prompt, label, ratio: f.ratio, res: f.res, secs: f.secs, thumb: scene ? (refThumb || null) : src.thumb, ...lineSet });
     toast('영상 요청을 보냈어요. 보통 1~3분 걸려요 🎬', 3200);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   },
   retryJob: async el => {
     const j = S.jobs.find(x => x.id === el.dataset.id); if (!j) return;
     await removeJob(j.id);
-    startVideo({ charId: j.charId, mode: j.mode, sourceId: j.sourceId, refIds: j.refIds, prompt: j.prompt, label: j.label, ratio: j.ratio, res: j.res, secs: j.secs, thumb: j.thumb });
+    const { id, status, iid, error, errorRaw, createdAt, stepAt, model, step, ...rest } = j;
+    // 2단계 중이었으면 거기서부터 (첫 장면이 이미 있으면 대사만 다시)
+    startVideo({ ...rest, step: j.viaChain ? (j.openIid && step === 'speak' ? 'speak' : 'open') : 'main' });
+  },
+  retryNoLine: async el => {
+    const j = S.jobs.find(x => x.id === el.dataset.id); if (!j || !j.silentPrompt) return;
+    await removeJob(j.id);
+    startVideo({ charId: j.charId, mode: j.mode, sourceId: j.sourceId, refIds: j.refIds, prompt: j.silentPrompt, label: String(j.label || '').replace(/ · 대사$/, ''),
+      ratio: j.ratio, res: j.res, secs: j.secs, thumb: j.thumb, hasLine: false });
+    toast('대사 없이 다시 만들고 있어요 🎬', 2600);
   },
   dismissJob: async el => { await removeJob(el.dataset.id); render(); },
-  jobDetail: el => { const j = S.jobs.find(x => x.id === el.dataset.id); if (j) Sheet.show(`<h3>오류 자세히</h3><pre class="raw">${esc(j.errorRaw || '')}</pre><button class="btn btn-primary full" style="margin-top:14px" data-sheet-val="">확인</button>`); },
+  jobDetail: el => { const j = S.jobs.find(x => x.id === el.dataset.id); if (j) Sheet.show(`<h3>오류 자세히</h3><p class="hint" style="margin-top:0">이 화면을 캡처해서 보내 주시면 원인을 찾는 데 도움이 돼요.</p><pre class="raw">${esc(j.errorRaw || '')}</pre><button class="btn btn-primary full" style="margin-top:14px" data-sheet-val="">확인</button>`); },
 
   /* 뷰어 */
   openMedia: el => {
@@ -1798,9 +2492,13 @@ const ACT = {
   },
   testKey: () => { const v = (($('#keyInput') || {}).value || '').trim() || getKey(); if (!v) return toast('키를 먼저 입력해 주세요'); runKeyTest(v); },
   setImgSize: el => { LS.set('imgSize', el.dataset.val); render(); },
-  resetUsage: () => { LS.set('usage', { images: 0, videos: 0, analyses: 0, cost: 0 }); render(); },
+  costRow: el => { const k = el.dataset.k; if (costOpen.has(k)) costOpen.delete(k); else costOpen.add(k); render(); },
+  refreshFx: async () => { if (await refreshFx(true)) { toast('환율을 새로 불러왔어요'); render(); } },
+  resetCosts: async () => { if (!(await confirmSheet('비용 기록을 지울까요?', '이번 달·연도별·누적 기록이 모두 0으로 돌아가요. 구글 청구에는 영향이 없어요.', '지우기', true))) return; Costs.reset(); costOpen.clear(); render(); toast('비용 기록을 지웠어요'); },
   saveModels: () => {
-    const v = { analysis: $('#mAnalysis').value.trim() || MODEL_DEFAULTS.analysis, image: $('#mImage').value.trim() || MODEL_DEFAULTS.image, video: $('#mVideo').value.trim() || MODEL_DEFAULTS.video };
+    // 기본값과 같은 칸은 저장하지 않음 (앱이 기본 모델을 바꾸면 자동으로 따라가게)
+    const v = {};
+    for (const [k, sel] of [['analysis', '#mAnalysis'], ['image', '#mImage'], ['video', '#mVideo']]) { const x = $(sel).value.trim(); if (x && x !== MODEL_DEFAULTS[k]) v[k] = x; }
     LS.set('models', v); for (const k in modelOK) delete modelOK[k];
     toast('모델 설정을 저장했어요'); render();
   },
@@ -1834,7 +2532,7 @@ function resetCreate() {
   c.cands.forEach(x => x.url && URL.revokeObjectURL(x.url));
   S.create = freshCreate();
 }
-async function runCand(cd, i) {
+async function runCand(cd, i, op) {
   const c = S.create;
   const p = c.profile;
   const { tweak, baseB64 } = cd.args || {};
@@ -1842,9 +2540,8 @@ async function runCand(cd, i) {
   try {
     const refs = baseB64 ? [{ mime: 'image/jpeg', b64: baseB64 }] : [];
     const prompt = baseB64 ? tweakPrompt(p, tweak) : portraitPrompt(p, ANGLES[i % ANGLES.length], tweak);
-    const blob = await generateImage({ refs, prompt, ratio: '3:4', size: '1K' });
+    const blob = await generateImage({ refs, prompt, ratio: '3:4', size: '1K', op });
     cd.blob = blob; cd.url = URL.createObjectURL(blob); cd.prompt = prompt; cd.status = 'done';
-    addUsage('images', COST.img['1K']);
   } catch (e) { cd.status = 'error'; cd.error = e; }
   renderSoon();
 }
@@ -1983,11 +2680,14 @@ async function init() {
   try { history.replaceState({ view: 'home', d: 0 }, ''); } catch {}
   try { await loadChars(); }
   catch (e) { console.error(e); toast('저장소를 열 수 없어요. 개인정보 보호(시크릿) 모드라면 일반 모드로 열어 주세요.', 5000); }
+  Costs.migrate();
   render();
   resumeJobs();
   setInterval(tick, 1000);
+  refreshFx(false).then(ok => { if (ok) renderSoon(); });
+  setTimeout(fixVideoThumbs, 1500);
 }
-window.__muse = { S, extractOutputs, friendlyError }; // 디버그용
+window.__muse = { S, extractOutputs, friendlyError, Costs, usageUsd, fmtUsd, fmtKrw, videoThumb, fixVideoThumbs }; // 디버그용
 init();
 })();
 </script>
